@@ -214,7 +214,7 @@ public class ArtificialLifeFX extends Application {
     }
     
     public void updateWorld(){  
-        //display.getChildren().clear();
+        display.getChildren().clear();
         
         for (int i = 0; i < world.getEntityStack(); i++) { //replaces space with correct symbol
             double tempy = world.entities.get(i).getyPos();
