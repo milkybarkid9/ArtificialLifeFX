@@ -10,9 +10,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,13 +24,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
+
 public class ArtificialLifeFX extends Application {
+    public static Integer DEFAULT_PADDING = 5;
+    
     AnimationTimer timer;
     AWorld world;
     BorderPane pane = new BorderPane();
@@ -44,14 +45,11 @@ public class ArtificialLifeFX extends Application {
         Button resetButton = new Button("Reset");    
     
     TabPane tabPane = new TabPane();
-        Tab worldTab = new Tab();
-            VBox worldTabPane = new VBox();
-                Label worldStringLabel = new Label();
-                TextField worldString = new TextField ();
-                Button submitWorldString = new Button();
-        Tab newEntityTab = new Tab();
-            
+        
+        Tab newEntityTab = new Tab();            
         Tab entityInfoTab = new Tab();
+        
+    WorldTab worldTab = new WorldTab();
     
     int spriteScale = 40;
     boolean running = false;
@@ -254,21 +252,13 @@ public class ArtificialLifeFX extends Application {
         simControl.getChildren().addAll(playButton, resetButton);
         simControl.setPadding(new Insets(5, 5, 5, 5));
         
-        worldTab.setText("World");
         newEntityTab.setText("Entity Management");
         entityInfoTab.setText("Entity Info");
         
-        tabPane.getTabs().addAll(worldTab, newEntityTab, entityInfoTab);
+        tabPane.getTabs().addAll(worldTab.setup(), newEntityTab, entityInfoTab);
         tabPane.setMinWidth(400);
         tabPane.setMaxWidth(400);
-        tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
-        
-        submitWorldString.setText("Generate world");        
-        worldTab.setContent(worldTabPane);
-        worldStringLabel.
-        worldTabPane.getChildren().addAll(worldStringLabel, worldString, submitWorldString);
-        worldTabPane.setPadding(new Insets(5,5,5,5));
-        
+        tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);        
         
         playButton.setPrefWidth(60);
         playButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -304,13 +294,7 @@ public class ArtificialLifeFX extends Application {
             }
         };
         
-        submitWorldString.setPrefWidth(160);
-        submitWorldString.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                world = fromText(worldString.getText());
-                updateWorld();
-            }
-        });     
+            
         
         pane.setTop(setMenu());
         pane.setCenter(display);

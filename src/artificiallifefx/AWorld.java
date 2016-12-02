@@ -292,34 +292,30 @@ public class AWorld {
     public void editEntity(int ID, String editVal, String newVal){
         for (int i = 0; i < entityStack; i++) {
             if (entities.get(i).getID() == ID) {
-                switch(editVal){
+                switch(editVal.toLowerCase()){
                     default:
                         break;
 
-                    case "Species":
                     case "species":
                         entities.get(i).setSpecies(newVal);
                         break;
 
-                    case "Symbol":
                     case "symbol":
                         char symbolChar[] = newVal.toCharArray();
                         entities.get(i).setSymbol(symbolChar[0]);
                         break;
 
-                    case "Xpos":
                     case "xpos":
                         if(canMove(Integer.parseInt(newVal), entities.get(i).getyPos()) == 0){
                             entities.get(i).setxPos(Integer.parseInt(newVal));
                         }                        
                         break;
 
-                    case "Ypos":
                     case "ypos":
                         if(canMove(entities.get(i).getxPos(), Integer.parseInt(newVal)) == 0){
                             entities.get(i).setyPos(Integer.parseInt(newVal));
                         } 
-                        break;        
+                        break;      
                 }
             }
         }        
