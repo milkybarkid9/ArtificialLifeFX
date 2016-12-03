@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -22,23 +23,24 @@ import javafx.scene.layout.VBox;
  */
 public class WorldTab {
     public Tab setup(){
-        Tab worldTab = new Tab();
+        Tab worldTab = new Tab("World");
             VBox worldTabVB = new VBox(ArtificialLifeFX.DEFAULT_PADDING);
-                Label dimensionLabel = new Label();
+                Label dimensionLabel = new Label("World dimensions:");
                 HBox dimensionsHB = new HBox(ArtificialLifeFX.DEFAULT_PADDING);    
-                    Label xLabel = new Label();
-                    TextField sizeX = new TextField ();
-                    Label yLabel = new Label();
-                    TextField sizeY = new TextField ();
-                Label foodPercentLabel = new Label();
-                TextField foodPercent = new TextField ();
-                Label obstaclePercentLabel = new Label();
-                TextField obstaclePercent = new TextField ();
-                Label beeQuantLabel = new Label();
-                TextField beeQuant = new TextField ();
-                Label antQuantLabel = new Label();
-                TextField antQuant = new TextField ();
-                Button submitWorld = new Button();
+                    Label xLabel = new Label("X:");
+                    TextField sizeX = new TextField ("10");
+                    Label yLabel = new Label("Y:");
+                    TextField sizeY = new TextField ("10");
+                Label foodPercentLabel = new Label("Food percentage:");
+                TextField foodPercent = new TextField ("5");
+                Label obstaclePercentLabel = new Label("Obstacle percentage:");
+                TextField obstaclePercent = new TextField ("5");
+                Label beeQuantLabel = new Label("Number of bees:");
+                TextField beeQuant = new TextField ("5");
+                Label antQuantLabel = new Label("Number of ants:");
+                TextField antQuant = new TextField ("5");
+                Button submitWorld = new Button("Generate world");
+                              
                 
                 dimensionsHB.getChildren().addAll(xLabel, sizeX, yLabel, sizeY);
             worldTabVB.getChildren().addAll(
@@ -54,27 +56,15 @@ public class WorldTab {
                     antQuant,
                     submitWorld
             );
-        worldTab.setContent(worldTabVB);            
-        
-        
-        worldTab.setText("World");
-            
-        dimensionLabel.setText("World dimensions:");
-        xLabel.setText("X:");
-        yLabel.setText("Y:");
-        foodPercentLabel.setText("Food percentage:"); 
-        obstaclePercentLabel.setText("Obstacle percentage:");
-        beeQuantLabel.setText("Number of bees:");
-        antQuantLabel.setText("Number of ants:");        
-        submitWorld.setText("Generate world");    
-        
-        sizeX.setPrefWidth(60);
-        sizeY.setPrefWidth(60);
-        foodPercent.setPrefWidth(60);
-        obstaclePercent.setPrefWidth(60);
-        beeQuant.setPrefWidth(60);
-        antQuant.setPrefWidth(60);
-        submitWorld.setPrefWidth(100);
+        worldTab.setContent(worldTabVB);
+                
+        sizeX.setMaxWidth(60);
+        sizeY.setMaxWidth(60);
+        foodPercent.setMaxWidth(60);
+        obstaclePercent.setMaxWidth(60);//setPrefWidth(60);
+        beeQuant.setMaxWidth(60);
+        antQuant.setMaxWidth(60);
+        submitWorld.setMaxWidth(100);
         
         submitWorld.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
