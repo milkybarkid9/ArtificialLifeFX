@@ -26,11 +26,11 @@ public class UI {
     TopMenu topMenu = new TopMenu();
     SimControlBar controlBar = new SimControlBar();
     
-    private double SCENE_WIDTH = 1420;
-    private double SCENE_HEIGHT = 800;
+    private final double SCENE_WIDTH = 1420;
+    private final double SCENE_HEIGHT = 800;
     Scene scene = new Scene(pane, SCENE_WIDTH,SCENE_HEIGHT);
     
-    private int localScale = ArtificialLifeFX.spriteScale;    
+    public int localScale = ArtificialLifeFX.spriteScale;    
     Image beeIMG = new Image("file:bee.PNG", localScale, localScale, false, false);
     Image rockIMG = new Image("file:rock.PNG", localScale, localScale, false, false);
     Image fruit1IMG = new Image("file:fruit1.PNG", localScale, localScale, false, false);
@@ -42,21 +42,20 @@ public class UI {
     public Scene setup(ArtificialLifeFX artificialLife){
         pane.setTop(topMenu.setMenu());
         pane.setCenter(display);
-        pane.setRight(controlPanelTabs.setup());
+        pane.setRight(controlPanelTabs.setup(this));
         pane.setBottom(controlBar.setup(artificialLife, this));
         
         display.setStyle("-fx-background-color: #B3FF99;");
-        display.setPadding(new Insets(50, 5, 5, 5));
         
         return scene;
     }
     
-     public void updateWorld(){  
+    public void updateWorld(){  
         display.getChildren().clear();
         
         for (int i = 0; i < ArtificialLifeFX.world.getEntityStack(); i++) { //replaces space with correct symbol
             double tempy = ArtificialLifeFX.world.entities.get(i).getyPos();
-            double tempx = ArtificialLifeFX.world.entities.get(i).getxPos();           
+            double tempx = ArtificialLifeFX.world.entities.get(i).getxPos();
                         
             if("food".equals(ArtificialLifeFX.world.entities.get(i).getSpecies())){
                 ImageView imageView = new ImageView(fruit1IMG);
@@ -75,5 +74,9 @@ public class UI {
                 display.getChildren().add(imageView); 
             }
         }       
+    }
+    
+    void setWorldSetupLabel(String text){
+        controlPanelTabs.setWorldSetupLabel(text);
     }
 }

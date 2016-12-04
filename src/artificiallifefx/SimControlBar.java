@@ -20,22 +20,18 @@ import javafx.scene.layout.HBox;
  *
  * @author James
  */
-public class SimControlBar {    
+public class SimControlBar {        
     public HBox setup(ArtificialLifeFX artificialLife, UI ui){
         HBox simControl = new HBox(5);
         Button playButton = new Button("Play");
         Button resetButton = new Button("Reset"); 
         Separator sep1 = new Separator(Orientation.VERTICAL);
-        Label worldString = new Label("World string: guff");
-        Separator sep2 = new Separator(Orientation.VERTICAL);
         Label isRunning = new Label("Probably");
         
         simControl.getChildren().addAll(
                 playButton, 
                 resetButton, 
                 sep1, 
-                worldString, 
-                sep2, 
                 isRunning
                 );
         simControl.setPadding(new Insets(

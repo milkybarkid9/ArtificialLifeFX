@@ -7,36 +7,19 @@ package artificiallifefx;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TabPane.TabClosingPolicy;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
 
 public class ArtificialLifeFX extends Application {
     public static Integer DEFAULT_PADDING = 5;
+    
     public static boolean running = false;
+    public static int spriteScale = 40;
+    
     public static AnimationTimer timer;
     public static AWorld world = new AWorld();
-    public static int spriteScale = 40;
+    
     
     UI ui = new UI();
     
@@ -79,10 +62,33 @@ public class ArtificialLifeFX extends Application {
         return world; 
     }
     
+    public static AWorld fromText(double xSize, double ySize, double foodPercent, double obststaclePercent, int ants, int bees){
+        AWorld world = new AWorld(xSize, ySize); //create new instance of the world
+        
+        double food = xSize*ySize*(foodPercent/100);
+        double obstacles = xSize*ySize*(obststaclePercent/100);
+        
+        for(int i = 0; i < food; i++){ //add food to world
+            world.addEntity("food", 'f', 5);
+        }
+        for (int i = 0; i < obstacles; i++) { //add obstacles to world
+            world.addEntity("obstacle", 'O', 0);
+        }
+        for (int i = 0; i < ants; i++) { //add entities         
+            world.addEntity("Ant", 'a', 5);
+        }
+        for (int i = 0; i < bees; i++) { //add entities           
+            world.addEntity("Bee", 'b', 5);
+        }
+        //ui.setWorldSetupLabel("oi");
+        return world;
+    }
+    
    
     
     @Override
-    public void start(Stage primaryStage) throws Exception {        
+    public void start(Stage primaryStage) throws Exception {    
+        
         timer = new AnimationTimer(){
             public void handle(long currentNanoTime)
             {

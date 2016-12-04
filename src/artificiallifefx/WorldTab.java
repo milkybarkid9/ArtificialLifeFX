@@ -5,7 +5,8 @@
  */
 package artificiallifefx;
 
-import static artificiallifefx.ArtificialLifeFX.fromText;
+import java.awt.event.KeyEvent;
+import static java.lang.String.valueOf;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -22,26 +23,30 @@ import javafx.scene.layout.VBox;
  * @author James
  */
 public class WorldTab {
-    public Tab setup(){
-        Tab worldTab = new Tab("World");
+    Tab worldTab = new Tab("World");
             VBox worldTabVB = new VBox(ArtificialLifeFX.DEFAULT_PADDING);
                 Label dimensionLabel = new Label("World dimensions:");
                 HBox dimensionsHB = new HBox(ArtificialLifeFX.DEFAULT_PADDING);    
                     Label xLabel = new Label("X:");
-                    TextField sizeX = new TextField ("10");
+                    TextField sizeX = new TextField ("35");
                     Label yLabel = new Label("Y:");
-                    TextField sizeY = new TextField ("10");
+                    TextField sizeY = new TextField ("35");
                 Label foodPercentLabel = new Label("Food percentage:");
-                TextField foodPercent = new TextField ("5");
+                TextField foodPercent = new TextField ("1");
                 Label obstaclePercentLabel = new Label("Obstacle percentage:");
-                TextField obstaclePercent = new TextField ("5");
+                TextField obstaclePercent = new TextField ("1");
                 Label beeQuantLabel = new Label("Number of bees:");
                 TextField beeQuant = new TextField ("5");
                 Label antQuantLabel = new Label("Number of ants:");
                 TextField antQuant = new TextField ("5");
-                Button submitWorld = new Button("Generate world");
-                              
+                HBox submitHB = new HBox(ArtificialLifeFX.DEFAULT_PADDING);
+                    Button submitWorld = new Button("Generate world");
+                    Label submitError = new Label();
+                Separator sep1 = new Separator();
+                Label worldSetup = new Label();
                 
+    public Tab setup(UI localUI){ 
+                    submitHB.getChildren().addAll(submitWorld, submitError);
                 dimensionsHB.getChildren().addAll(xLabel, sizeX, yLabel, sizeY);
             worldTabVB.getChildren().addAll(
                     dimensionLabel, 
@@ -54,7 +59,9 @@ public class WorldTab {
                     beeQuant,
                     antQuantLabel,
                     antQuant,
-                    submitWorld
+                    submitHB,                    
+                    sep1,
+                    worldSetup
             );
         worldTab.setContent(worldTabVB);
                 
@@ -68,9 +75,35 @@ public class WorldTab {
         
         submitWorld.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                
+                double sizeXVal, sizeYVal, foodPercentVal, obstaclePercentVal;
+                int beeQuantVal, antQuantVal;
+
+                try {
+                    sizeXVal = Double.parseDouble(sizeX.getText());
+                    sizeYVal = Double.parseDouble(sizeY.getText());
+                    foodPercentVal = Double.parseDouble(foodPercent.getText());
+                    obstaclePercentVal = Double.parseDouble(obstaclePercent.getText());
+                    beeQuantVal = Integer.parseInt(beeQuant.getText());
+                    antQuantVal = Integer.parseInt(antQuant.getText()); 
+                    
+                    ArtificialLifeFX.world = ArtificialLifeFX.fromText(sizeXVal, sizeYVal, foodPercentVal, obstaclePercentVal, beeQuantVal, antQuantVal);
+                    localUI.updateWorld();
+                    
+                    submitError.setText("");
+                    setWorldSetupLabel(
+                            "Size: "+sizeXVal+" by "+sizeYVal+"\n"
+                            + "Food percentage: "+foodPercentVal+"\n"
+                            + "Obstacle percentage: "+obstaclePercentVal+"\n"
+                            + "No. of Ants: "+antQuantVal+"\n"
+                            + "No. of Bees: "+beeQuantVal);
+                    
+                } catch(Exception ee) {
+                    submitError.setText("All values must be numbers");
+                }
             }
-        });
+        });    
+        
+        
         
         worldTabVB.setPadding(new Insets(
                 ArtificialLifeFX.DEFAULT_PADDING,
@@ -84,5 +117,9 @@ public class WorldTab {
         
         return worldTab;
     }
-    
+
+    void setWorldSetupLabel(String text) {
+        worldSetup.setText(text);
+    }
 }
+

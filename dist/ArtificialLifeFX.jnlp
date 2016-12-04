@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="ArtificialLifeFX.jar" size="26521" download="eager" />
+    <jar href="ArtificialLifeFX.jar" size="28011" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="ArtificialLifeFX" >
     <param name="requiredFXVersion" value="8.0+"/>
