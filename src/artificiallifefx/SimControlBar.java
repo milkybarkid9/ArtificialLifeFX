@@ -5,15 +5,11 @@
  */
 package artificiallifefx;
 
-import static artificiallifefx.ArtificialLifeFX.fromText;
-import static artificiallifefx.ArtificialLifeFX.timer;
+import static artificiallifefx.ArtificialLifeFX.moveTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 
 /**
@@ -25,14 +21,10 @@ public class SimControlBar {
         HBox simControl = new HBox(5);
         Button playButton = new Button("Play");
         Button resetButton = new Button("Reset"); 
-        Separator sep1 = new Separator(Orientation.VERTICAL);
-        Label isRunning = new Label("Probably");
         
         simControl.getChildren().addAll(
                 playButton, 
-                resetButton, 
-                sep1, 
-                isRunning
+                resetButton
                 );
         simControl.setPadding(new Insets(
                 ArtificialLifeFX.DEFAULT_PADDING, 
@@ -47,13 +39,12 @@ public class SimControlBar {
                 if("Play".equals(playButton.getText())){
                     playButton.setText("Pause");
                     ArtificialLifeFX.running = true;
-                    ArtificialLifeFX.timer.start();
+                    ArtificialLifeFX.moveTimer.start();
                 }else{
                     playButton.setText("Play");
                     ArtificialLifeFX.running = false;
-                    ArtificialLifeFX.timer.stop();
+                    ArtificialLifeFX.moveTimer.stop();
                 }
-                //code
             }
         });
         
@@ -62,9 +53,7 @@ public class SimControlBar {
             @Override public void handle(ActionEvent e) {
                 playButton.setText("Play");
                 ArtificialLifeFX.running = false;
-                timer.stop();                
-                ArtificialLifeFX.world = fromText("d"); 
-                ui.updateWorld();
+                moveTimer.stop();                
             }
         });
         

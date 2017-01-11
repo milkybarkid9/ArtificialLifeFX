@@ -14,9 +14,9 @@ package artificiallifefx;
 public abstract class AnEntity {
     protected String species;
     protected char symbol;
-    protected double xPos, yPos;
-    protected int ID;
+    protected int xPos, yPos, ID;
     protected AWorld world;
+    protected boolean canMove;
     
     // <editor-fold defaultstate="collapsed" desc="Constructors">
     AnEntity(){
@@ -28,7 +28,7 @@ public abstract class AnEntity {
         world = new AWorld();
     }
     
-    AnEntity(String speciesIn, char symbolIn, double xPosIn, double yPosIn, int IDIn, AWorld iWorld){
+    AnEntity(String speciesIn, char symbolIn, int xPosIn, int yPosIn, int IDIn, AWorld iWorld){
         species = speciesIn;
         symbol = symbolIn;
         xPos = xPosIn;
@@ -45,16 +45,21 @@ public abstract class AnEntity {
     public char getSymbol(){
         return symbol;
     }
-    public double getxPos(){
+    public int getxPos(){
         return xPos;
     }
-    public double getyPos(){
+    public int getyPos(){
         return yPos;
     }
     public int getID(){
         return ID;
     }
+    public boolean getCanMove(){
+        return canMove;
+    }
     public abstract int getEnergy();
+    
+    public abstract void decEnergy();
 
     public void setSpecies(String iSpecies){
         species = iSpecies;
@@ -62,16 +67,23 @@ public abstract class AnEntity {
     public void setSymbol(char iSymbol){
         symbol = iSymbol;
     }
-    public void setxPos(double ixPos){
+    public void setxPos(int ixPos){
         xPos = ixPos;
     }
-    public void setyPos(double iyPos){
+    public void setyPos(int iyPos){
         yPos = iyPos;
     }
     public void setID(int iID){
         ID = iID;
     }
+    public void setCanMove(boolean newCanMove){
+        canMove = newCanMove;
+    }
     public abstract void setEnergy(int iEnergy);
+    
+    public abstract boolean getAlive();
+    
+    public abstract void setAlive(boolean iAlive);
     //</editor-fold>
     
     public abstract boolean smellFood(AWorld.Direction D, int range);

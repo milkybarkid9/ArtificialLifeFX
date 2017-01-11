@@ -5,7 +5,6 @@
  */
 package artificiallifefx;
 
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
 /**
@@ -14,16 +13,14 @@ import javafx.scene.control.TabPane;
  */
 public class ControlPanelTabs {
     TabPane tabPane = new TabPane();        
-    Tab newEntityTab = new Tab();            
-    Tab entityInfoTab = new Tab();        
+    NewEntityTab newEntityTab = new NewEntityTab();            
+    EntityInfoTab entityInfoTab = new EntityInfoTab();        
     WorldTab worldTab = new WorldTab();
+    
         
     public TabPane setup(UI localUI){        
         
-        newEntityTab.setText("Entity Management");
-        entityInfoTab.setText("Entity Info");
-        
-        tabPane.getTabs().addAll(worldTab.setup(localUI), newEntityTab, entityInfoTab);
+        tabPane.getTabs().addAll(worldTab.setup(localUI), newEntityTab.setup(localUI), entityInfoTab.setup(localUI));
         tabPane.setMinWidth(400);
         tabPane.setMaxWidth(400);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);   

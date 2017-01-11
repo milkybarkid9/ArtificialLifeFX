@@ -14,7 +14,7 @@ public class AnObstacle extends AnEntity{
         super();
     }
     
-    AnObstacle(String speciesIn, char symbolIn, double xPosIn, double yPosIn, int IDIn, AWorld iWorld){
+    AnObstacle(String speciesIn, char symbolIn, int xPosIn, int yPosIn, int IDIn, AWorld iWorld){
         super(speciesIn, symbolIn, xPosIn, yPosIn, IDIn, iWorld);
     }
     
@@ -28,6 +28,21 @@ public class AnObstacle extends AnEntity{
 
     public boolean smellFood(AWorld.Direction D, int range) {
         return false;
+    }
+
+    @Override
+    public void decEnergy() {
+        
+    }
+
+    @Override
+    public boolean getAlive() {
+        return false;
+    }
+
+    @Override
+    public void setAlive(boolean iAlive) {
+        
     }
     
 }

@@ -5,7 +5,7 @@
  */
 package artificiallifefx;
 
-import static artificiallifefx.ArtificialLifeFX.timer;
+import static artificiallifefx.ArtificialLifeFX.moveTimer;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
@@ -55,7 +55,7 @@ public class TopMenu {
 
         MenuItem mExit = new MenuItem("Exit");
         mExit.setOnAction((ActionEvent actionEvent) -> {
-            timer.stop();
+            moveTimer.stop();
             System.exit(0);
         });
         mFile.getItems().addAll(mNewConfig, mLoadConfig, mSave, mSaveAs, mExit);
@@ -102,12 +102,12 @@ public class TopMenu {
         Menu mSimulation = new Menu("Simulation");
         MenuItem mRun = new MenuItem("Run");
         mRun.setOnAction((ActionEvent actionEvent) -> {
-            timer.start();
+            moveTimer.start();
         });
 
         MenuItem mPlayPause = new MenuItem("Play/Pause");
         mPlayPause.setOnAction((ActionEvent actionEvent) -> {
-            timer.stop();
+            moveTimer.stop();
         });
 
         MenuItem mReset = new MenuItem("Reset");

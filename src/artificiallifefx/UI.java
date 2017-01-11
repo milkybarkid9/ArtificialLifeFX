@@ -5,13 +5,13 @@
  */
 package artificiallifefx;
 
-import static artificiallifefx.ArtificialLifeFX.world;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.GridPane;
 
 /**
  *
@@ -20,7 +20,8 @@ import javafx.scene.layout.Pane;
 public class UI {
     BorderPane pane = new BorderPane();
     BorderPane menupane = new BorderPane();
-    Pane display = new Pane();    
+    ScrollPane scrollPane = new ScrollPane();
+    GridPane display = new GridPane();    
     
     ControlPanelTabs controlPanelTabs = new ControlPanelTabs();
     TopMenu topMenu = new TopMenu();
@@ -29,19 +30,25 @@ public class UI {
     private final double SCENE_WIDTH = 1420;
     private final double SCENE_HEIGHT = 800;
     Scene scene = new Scene(pane, SCENE_WIDTH,SCENE_HEIGHT);
-    
-    public int localScale = ArtificialLifeFX.spriteScale;    
-    Image beeIMG = new Image("file:bee.PNG", localScale, localScale, false, false);
-    Image rockIMG = new Image("file:rock.PNG", localScale, localScale, false, false);
-    Image fruit1IMG = new Image("file:fruit1.PNG", localScale, localScale, false, false);
-    Image fruit2IMG = new Image("file:fruit2.PNG", localScale, localScale, false, false);
-    Image fruit3IMG = new Image("file:fruit3.PNG", localScale, localScale, false, false);
-    Image fruit4IMG = new Image("file:fruit4.PNG", localScale, localScale, false, false);
-    Image fruit5IMG = new Image("file:fruit5.PNG", localScale, localScale, false, false);
+     
+    Image antIMG = new Image("file:ant.PNG");
+    Image beeIMG = new Image("file:bee.PNG");
+    Image rockIMG = new Image("file:rock.PNG");
+    Image fruit1IMG = new Image("file:fruit1.PNG");
+    Image fruit2IMG = new Image("file:fruit2.PNG");
+    Image fruit3IMG = new Image("file:fruit3.PNG");
+    Image fruit4IMG = new Image("file:fruit4.PNG");
+    Image fruit5IMG = new Image("file:fruit5.PNG");
+    Image grassIMG = new Image("file:grass.PNG");
+    Image meatIMG = new Image("file:meat.PNG");
+    Image errorIMG = new Image("file:question-mark.PNG");
     
     public Scene setup(ArtificialLifeFX artificialLife){
+        scrollPane.setContent(display);
+        scrollPane.setPannable(true);
+        
         pane.setTop(topMenu.setMenu());
-        pane.setCenter(display);
+        pane.setCenter(scrollPane);
         pane.setRight(controlPanelTabs.setup(this));
         pane.setBottom(controlBar.setup(artificialLife, this));
         
@@ -53,30 +60,74 @@ public class UI {
     public void updateWorld(){  
         display.getChildren().clear();
         
+        for (int i = 0; i < ArtificialLifeFX.ySize; i++){
+            for (int j = 0; j < ArtificialLifeFX.xSize; j++) {
+                ImageView grassView = new ImageView(grassIMG);
+                grassView.setFitHeight(30);
+                grassView.setFitWidth(30);
+                
+                display.add(grassView, j, i);
+            }
+        }
+
         for (int i = 0; i < ArtificialLifeFX.world.getEntityStack(); i++) { //replaces space with correct symbol
-            double tempy = ArtificialLifeFX.world.entities.get(i).getyPos();
-            double tempx = ArtificialLifeFX.world.entities.get(i).getxPos();
-                        
-            if("food".equals(ArtificialLifeFX.world.entities.get(i).getSpecies())){
+            int tempy = (int) ArtificialLifeFX.world.entities.get(i).getyPos();
+            int tempx = (int) ArtificialLifeFX.world.entities.get(i).getxPos();
+            
+            if(ArtificialLifeFX.world.entities.get(i).getAlive() == false && !"food".equals(ArtificialLifeFX.world.entities.get(i).getSpecies()) && !"obstacle".equals(ArtificialLifeFX.world.entities.get(i).getSpecies())){
+                ImageView imageView = new ImageView(meatIMG);
+                imageView.setFitHeight(30);
+                imageView.setFitWidth(30);
+                display.add(imageView, ArtificialLifeFX.world.entities.get(i).getxPos(), ArtificialLifeFX.world.entities.get(i).getyPos());
+            } else if("food".equals(ArtificialLifeFX.world.entities.get(i).getSpecies())){  
                 ImageView imageView = new ImageView(fruit1IMG);
-                imageView.setTranslateX(tempx*20);
-                imageView.setTranslateY(tempy*20);
-                display.getChildren().add(imageView);
+                imageView.setFitHeight(30);
+                imageView.setFitWidth(30);
+                display.add(imageView, tempx, tempy);
             }else if("obstacle".equals(ArtificialLifeFX.world.entities.get(i).getSpecies())){
                 ImageView imageView = new ImageView(rockIMG);
-                imageView.setTranslateX(tempx*20);
-                imageView.setTranslateY(tempy*20);
-                display.getChildren().add(imageView); 
+                imageView.setFitHeight(30);
+                imageView.setFitWidth(30);
+                display.add(imageView, tempx, tempy);
+            }else if("ant".equals(ArtificialLifeFX.world.entities.get(i).getSpecies())){
+                ImageView imageView = new ImageView(antIMG);
+                imageView.setFitHeight(30);
+                imageView.setFitWidth(30);
+                display.add(imageView, tempx, tempy);
+            }else if("bee".equals(ArtificialLifeFX.world.entities.get(i).getSpecies())){
+                ImageView imageView = new ImageView(beeIMG);
+                imageView.setFitHeight(30);
+                imageView.setFitWidth(30);
+                display.add(imageView, tempx, tempy);
             }else{
-                ImageView imageView = new ImageView(beeIMG);              
-                imageView.setTranslateX(tempx*20);
-                imageView.setTranslateY(tempy*20);
-                display.getChildren().add(imageView); 
+                ImageView imageView = new ImageView(errorIMG);  
+                imageView.setFitHeight(30);
+                imageView.setFitWidth(18);
+                display.add(imageView, tempx, tempy);
             }
-        }       
+            
+            
+        }
+        
+        labelEntities();
     }
     
-    void setWorldSetupLabel(String text){
+    public void labelEntities(){
+        for (int i = 0; i < ArtificialLifeFX.world.getEntityStack(); i++) { //replaces space with correct symbol
+            int tempy = (int) ArtificialLifeFX.world.entities.get(i).getyPos();
+            int tempx = (int) ArtificialLifeFX.world.entities.get(i).getxPos();
+                
+            if(ArtificialLifeFX.world.getShowID() == true){
+                Label ID = new Label();
+                ID.setText(ArtificialLifeFX.world.entities.get(i).getID()+"");
+                ID.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
+                display.add(ID, tempx, tempy);
+            }   
+        }
+    }
+    
+    
+    public void setWorldSetupLabel(String text){
         controlPanelTabs.setWorldSetupLabel(text);
     }
 }

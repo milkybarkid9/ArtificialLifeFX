@@ -5,22 +5,20 @@
  */
 package artificiallifefx;
 
-import static java.lang.Math.abs;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import javax.swing.JOptionPane;
 
 /**
  *
  * @author James
  */
 public class AWorld {
-    protected double xSize, ySize;
+    protected int xSize, ySize;
     protected int entityStack, maxEnts, worldTick;
-    protected ArrayList<AnEntity> entities = new ArrayList<AnEntity>();
+    protected boolean showID;
+    protected ArrayList<AnEntity> entities = new ArrayList<>();
     Random rng = new Random();
     
     
@@ -31,25 +29,30 @@ public class AWorld {
         entityStack = 0;
         maxEnts = (int) (xSize*ySize)/4;
         worldTick = 0;
+        showID = false;
     }
-    AWorld(double ixSize, double iySize){
+    AWorld(int ixSize, int iySize){
         xSize = ixSize;
         ySize = iySize;
         entityStack = 0;
         maxEnts = (int) (xSize*ySize)/4;
         worldTick = 0;
+        showID = false;
     }
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Getters and Setters">
-    public double getxSize(){
+    public int getxSize(){
         return xSize;
     }
-    public double getySize(){
+    public int getySize(){
         return ySize;
     }
     public int getEntityStack(){
         return entityStack;
+    }
+    public boolean getShowID(){
+        return showID;
     }
     
     public void setySize(int iySize){
@@ -58,16 +61,43 @@ public class AWorld {
     public void setxSize(int ixSize){
         xSize = ixSize;
     }
+    public void setEntityStack(int newEntityStack){
+        entityStack = newEntityStack;
+    }
+    public void setShowID(boolean show){
+        showID = show;
+    }
     // </editor-fold>
+    
+    public void eat(AnEntity entity, int xpos, int ypos){
+        for (int i = 0; i < entityStack; i++) {            
+            if (xpos == entities.get(i).getxPos() && ypos == entities.get(i).getyPos() && ("food".equals(entities.get(i).getSpecies()) || entities.get(i).getAlive() == false)){
+                entity.setxPos(xpos);
+                entity.setyPos(ypos);
+                removeEntity(i);
+                
+            }
+        }
+        
+    }
+    
+    public void checkDead(){
+        for (int i = 0; i < entityStack; i++) {
+            if(entities.get(i).getEnergy() <= 0){
+                entities.get(i).setAlive(false);
+                entities.get(i).setEnergy(7);
+            }            
+        }
+    }
     
     public String entityStats(){ 
         String output = "";
         int foodCount = 0;
         for (int i = 0; i < entityStack; i++) { //for all entities
-            if("food".equals(entities.get(i).getSpecies())){ //if entity is food, increment food count
+            if("food".equals(entities.get(i).getSpecies()) || (entities.get(i).getAlive() == false && !"obstacle".equals(entities.get(i).getSpecies()))){ //if entity is food, increment food count
                 foodCount++;
             }else if(!"obstacle".equals(entities.get(i).getSpecies())){ //if not an obstacle
-                output += "ID: " + entities.get(i).getID() + ", Species: " + entities.get(i).getSpecies() + ", Energy: " + entities.get(i).getEnergy() + "\n"; //print stats
+                output += "ID: " + entities.get(i).getID() + ", Species: " + entities.get(i).getSpecies() + ", Energy: " + entities.get(i).getEnergy() + ", Alive: " + entities.get(i).getAlive() + "\n"; //print stats
             }           
         }
         output += "\nFood left = "+foodCount; //output amount of food
@@ -75,57 +105,63 @@ public class AWorld {
     }
     
     public boolean moveCheck(int i, Direction d, String towards){
+        int xpos = entities.get(i).getxPos();
+        int ypos = entities.get(i).getyPos();
+        int ID = entities.get(i).getID();
+        int energy = entities.get(i).getEnergy();
+        String species = entities.get(i).getSpecies();
+        
         boolean foodFound = false; //food not yet found
         switch(d){
             case north: //north chosen
-                if(canMove(entities.get(i).getxPos(),entities.get(i).getyPos()-1) == 0){ //if space to move into is free
-                    entities.get(i).setyPos(entities.get(i).getyPos()-1); //move entity
-                    System.out.println(entities.get(i).getSpecies()+" "+entities.get(i).getID()+" moved "+d+" "+towards); 
+                if(canMove(xpos,ypos-1) == 0){ //if space to move into is free
+                    entities.get(i).setyPos(ypos-1); //move entity
+                    System.out.println(species+" "+ID+" moved "+d+" "+towards); 
                     foodFound = true; //food found
-                }else if(canMove(entities.get(i).getxPos()-1,entities.get(i).getyPos()) == 2){ //if space to move into is food
+                }else if(canMove(xpos-1,ypos) == 2){ //if space to move into is food
                     i--; //go back a space in entity list
-                    entities.get(i).setEnergy(entities.get(i).getEnergy()+5); //add energy to entity
-                    entities.get(i).setyPos(entities.get(i).getyPos()-1); //move entity
-                    System.out.println(entities.get(i).getSpecies()+" "+entities.get(i).getID()+" moved "+d+" "+towards);
+                    entities.get(i).setEnergy(energy+5); //add energy to entity
+                    entities.get(i).setyPos(ypos-1); //move entity
+                    System.out.println(species+" "+ID+" moved "+d+" "+towards);
                     foodFound = true; //food found
                 }
                 break;
             case south: //south chosen
-                if(canMove(entities.get(i).getxPos(),entities.get(i).getyPos()+1) == 0){ //if space to move into is free
-                    entities.get(i).setyPos(entities.get(i).getyPos()+1); //move entity
-                    System.out.println(entities.get(i).getSpecies()+" "+entities.get(i).getID()+" moved "+d+" "+towards);
+                if(canMove(xpos,ypos+1) == 0){ //if space to move into is free
+                    entities.get(i).setyPos(ypos+1); //move entity
+                    System.out.println(species+" "+ID+" moved "+d+" "+towards);
                     foodFound = true; //food found
-                }else if(canMove(entities.get(i).getxPos()-1,entities.get(i).getyPos()) == 2){ //if space to move into is food
+                }else if(canMove(xpos-1,ypos) == 2){ //if space to move into is food
                     i--; //go back a space in entity list
-                    entities.get(i).setEnergy(entities.get(i).getEnergy()+5); //add energy to entity
-                    entities.get(i).setyPos(entities.get(i).getyPos()+1); //move entity
-                    System.out.println(entities.get(i).getSpecies()+" "+entities.get(i).getID()+" moved "+d+" "+towards);
+                    entities.get(i).setEnergy(energy+5); //add energy to entity
+                    entities.get(i).setyPos(ypos+1); //move entity
+                    System.out.println(species+" "+ID+" moved "+d+" "+towards);
                     foodFound = true; //food found
                 }
                 break;
             case east: //east chosen
-                if(canMove(entities.get(i).getxPos()+1,entities.get(i).getyPos()) == 0){ //if space to move into is free
-                    entities.get(i).setxPos(entities.get(i).getxPos()+1); //move entity
-                    System.out.println(entities.get(i).getSpecies()+" "+entities.get(i).getID()+" moved "+d+" "+towards);
+                if(canMove(xpos+1,ypos) == 0){ //if space to move into is free
+                    entities.get(i).setxPos(xpos+1); //move entity
+                    System.out.println(species+" "+ID+" moved "+d+" "+towards);
                     foodFound = true; //food found
-                }else if(canMove(entities.get(i).getxPos()-1,entities.get(i).getyPos()) == 2){ //if space to move into is food
+                }else if(canMove(xpos-1,ypos) == 2){ //if space to move into is food
                     i--; //go back a space in entity list
-                    entities.get(i).setEnergy(entities.get(i).getEnergy()+5); //add energy to entity
-                    entities.get(i).setxPos(entities.get(i).getxPos()+1); //move entity
-                    System.out.println(entities.get(i).getSpecies()+" "+entities.get(i).getID()+" moved "+d+" "+towards);
+                    entities.get(i).setEnergy(energy+5); //add energy to entity
+                    entities.get(i).setxPos(xpos+1); //move entity
+                    System.out.println(species+" "+ID+" moved "+d+" "+towards);
                     foodFound = true; //food found
                 }                            
                 break;
             case west: //west chosen
-                if(canMove(entities.get(i).getxPos()-1,entities.get(i).getyPos()) == 0){ //if space to move into is free
-                    entities.get(i).setxPos(entities.get(i).getxPos()-1); //move entity
-                    System.out.println(entities.get(i).getSpecies()+" "+entities.get(i).getID()+" moved "+d+" "+towards);
+                if(canMove(xpos-1,ypos) == 0){ //if space to move into is free
+                    entities.get(i).setxPos(xpos-1); //move entity
+                    System.out.println(species+" "+ID+" moved "+d+" "+towards);
                     foodFound = true; //food found
-                }else if(canMove(entities.get(i).getxPos()-1,entities.get(i).getyPos()) == 2){ //if space to move into is food
+                }else if(canMove(xpos-1,ypos) == 2){ //if space to move into is food
                     i--; //go back a space in entity list
-                    entities.get(i).setEnergy(entities.get(i).getEnergy()+5); //add energy to entity
-                    entities.get(i).setxPos(entities.get(i).getxPos()-1); //move entity
-                    System.out.println(entities.get(i).getSpecies()+" "+entities.get(i).getID()+" moved "+d+" "+towards);
+                    entities.get(i).setEnergy(energy+5); //add energy to entity
+                    entities.get(i).setxPos(xpos-1); //move entity
+                    System.out.println(species+" "+ID+" moved "+d+" "+towards);
                     foodFound = true; //food found
                 }
                 break;
@@ -134,17 +170,21 @@ public class AWorld {
     }
     
     public void move(){
-        worldTick++;
-        System.out.println("\nWorld tick: "+worldTick+"\n---------------");
-        boolean foodFound;
-        List<Direction> rngDire = new ArrayList<>();
-        Collections.addAll(rngDire, Direction.values());
-        for (int i = 0; i < entityStack; i++) {
-            foodFound = false;
-            if("obstacle".equals(entities.get(i).getSpecies()) || "food".equals(entities.get(i).getSpecies())){
+        worldTick++; //increment world tick
+        System.out.println("\nWorld tick: "+worldTick+"\n---------------"); //print tick no
+        boolean foodFound; 
+        List<Direction> rngDire = new ArrayList<>(); //arraylist for all four directions
+        Collections.addAll(rngDire, Direction.values()); //add all directions
+        
+        for (int i = 0; i < entityStack; i++) { //for all entities
+            foodFound = false; 
+            
+            
+            if(entities.get(i).getCanMove()){ //if entity can move
                 
-            }else{
-                Collections.shuffle(rngDire);
+                entities.get(i).decEnergy(); //take away one energy
+                Collections.shuffle(rngDire); //
+                
                 for (int j = 0; j < 4; j++) {
                     if(entities.get(i).smellFood(rngDire.get(j), 10)){
                         foodFound = moveCheck(i, rngDire.get(j), "towards food");
@@ -153,32 +193,39 @@ public class AWorld {
                 if(foodFound == false){
                     directionLoop:
                     for (int j = 0; j < 4; j++) {
-                        switch(rngDire.get(j)){
+                        
+                        int xpos = entities.get(i).getxPos();
+                        int ypos = entities.get(i).getyPos();
+                        int ID = entities.get(i).getID();
+                        String species = entities.get(i).getSpecies();
+                        Direction direction = rngDire.get(j);                        
+                        
+                        switch(direction){
                             case north:
-                                if(canMove(entities.get(i).getxPos(),entities.get(i).getyPos()-1) == 0){ //if space to move into is free
-                                    entities.get(i).setyPos(entities.get(i).getyPos()-1); //move entity
-                                    System.out.println(entities.get(i).getSpecies()+" "+entities.get(i).getID()+" moved "+rngDire.get(j));
+                                if(canMove(xpos, ypos-1) == 0){ //if space to move into is free
+                                    entities.get(i).setyPos(ypos-1); //move entity
+                                    System.out.println(species+" "+ID+" moved "+direction);
                                     break directionLoop;
                                 }
                                 break;
                             case south:
-                                if(canMove(entities.get(i).getxPos(),entities.get(i).getyPos()+1) == 0){ //if space to move into is free
-                                    entities.get(i).setyPos(entities.get(i).getyPos()+1); //move entity
-                                    System.out.println(entities.get(i).getSpecies()+" "+entities.get(i).getID()+" moved "+rngDire.get(j));
+                                if(canMove(xpos, ypos+1) == 0){ //if space to move into is free
+                                    entities.get(i).setyPos(ypos+1); //move entity
+                                    System.out.println(species+" "+ID+" moved "+direction);
                                     break directionLoop;
                                 }
                                 break;
                             case east:
-                                if(canMove(entities.get(i).getxPos()+1,entities.get(i).getyPos()) == 0){ //if space to move into is free
-                                    entities.get(i).setxPos(entities.get(i).getxPos()+1); //move entity
-                                    System.out.println(entities.get(i).getSpecies()+" "+entities.get(i).getID()+" moved "+rngDire.get(j));
+                                if(canMove(xpos+1, ypos) == 0){ //if space to move into is free
+                                    entities.get(i).setxPos(xpos+1); //move entity
+                                    System.out.println(species+" "+ID+" moved "+direction);
                                     break directionLoop;
                                 }
                                 break;
                             case west:
-                                if(canMove(entities.get(i).getxPos()-1,entities.get(i).getyPos()) == 0){ //if space to move into is free
-                                    entities.get(i).setxPos(entities.get(i).getxPos()-1); //move entity
-                                    System.out.println(entities.get(i).getSpecies()+" "+entities.get(i).getID()+" moved "+rngDire.get(j));
+                                if(canMove(xpos-1, ypos) == 0){ //if space to move into is free
+                                    entities.get(i).setxPos(xpos-1); //move entity
+                                    System.out.println(species+" "+ID+" moved "+direction);
                                     break directionLoop;
                                 }
                                 break;
@@ -189,16 +236,16 @@ public class AWorld {
         }
     }
     
-    public boolean isFood(double x, double y){ //check if food at co-ords
+    public boolean isFood(int x, int y){ //check if food at co-ords
         for (int i = 0; i < entityStack; i++) { //for all entities
-            if (entities.get(i).getxPos() == x && entities.get(i).getyPos() == y && "food".equals(entities.get(i).getSpecies())){ //if there is an entity at x,y and has the name food
+            if (entities.get(i).getxPos() == x && entities.get(i).getyPos() == y && ("food".equals(entities.get(i).getSpecies()) || entities.get(i).getAlive() == false)){ //if there is an entity at x,y and has the name food or is dead
                 return true; 
             }
         }
         return false;
     }
     
-    public int canMove(double x, double y){
+    public int canMove(int x, int y){
         if(x < 0 || x >= xSize || y < 0 || y >= ySize){ //if co-ords are out of range of symmap
             System.out.println("Movement out of bounds");
             return 1; //false
@@ -207,6 +254,7 @@ public class AWorld {
                 if (entities.get(i).getxPos() == x && entities.get(i).getyPos() == y){ //if there is an entity at x,y
                     if("food".equals(entities.get(i).getSpecies())){ //if name of entity is food
                         removeEntity(i);
+                        entities.get(i).setEnergy(entities.get(i).getEnergy()+7);
                         System.out.println("Food removed at "+x+","+y); //state food removed
                         return 2; //true, on food
                     }else{ //else must be obstacle or creature
@@ -223,24 +271,17 @@ public class AWorld {
         entityStack--; //one less entity in array        
     }
     
-    public boolean nearTo(double xpos, double ypos, double entityxPos, double entityyPos){
-        if(abs(xpos - entityxPos) < 100 && abs(ypos - entityyPos) < 100){
-            return true;
-        }else{
-            return false;
-        }  
-    }
     
-    public double[] getPos() {
+    public int[] getStartingPos() {
         while(true){
-            double[] positions = new double[2];
-            positions[0] = rng.nextInt((int) xSize); //gen random x co-ord
-            positions[1] = rng.nextInt((int) ySize); //gen random y co-ord
+            int[] positions = new int[2];
+            positions[0] = rng.nextInt(xSize); //gen random x co-ord
+            positions[1] = rng.nextInt(ySize); //gen random y co-ord
             if(entityStack == 0){
                 return positions; //if first entity then positions are fine
             }else{
                 for (int i = 0; i < entityStack; i++) { //for all entities
-                    if (nearTo( positions[0], positions[1], entities.get(i).getxPos(), entities.get(i).getyPos())) { //if there isn't an entity at those co-ords
+                    if (positions[0] != entities.get(i).getxPos() &&  positions[1] != entities.get(i).getyPos()) { //if there isn't an entity at those co-ords
                         return positions;
                     }
                 }
@@ -248,34 +289,26 @@ public class AWorld {
         } 
     }
     
-    public void addEntity(){
-        if(entityStack < maxEnts){ //if less than max number of entities
-            System.out.println("Entity " + (entityStack+1)); //printing entity no
-            entities.add(new ALifeform()); //initialise entity
-            entityStack++; //increment for next entity
-            
-            entities.get(entityStack).setSpecies(JOptionPane.showInputDialog(null, "Input the species")); //input species using JOptionPane
-            String symbol = JOptionPane.showInputDialog(null, "Input the symbol"); //store string using JOptionPane
-            char symbolChar[] = symbol.toCharArray(); //convert to char array
-            entities.get(entityStack).setSymbol(symbolChar[0]); //take first char as symbol
-            double[] positions = new double[2];
-            positions = getPos();
-            entities.get(entityStack).setxPos(positions[0]); //fetch xpos from generated list
-            entities.get(entityStack).setyPos(positions[1]); //fetch ypos from generated list
-            String energy = JOptionPane.showInputDialog(null, "Input the energy"); //store string using JOptionPane
-            entities.get(entityStack).setEnergy(Integer.parseInt(energy)); //cast string as int and input to class
-            entities.get(entityStack).setID(entityStack); //id set as entity no.
-            System.out.println(entities.get(entityStack).entToText()); //print to console
-        }else{
-            System.out.println("Entity limit reached at " + maxEnts + " entities"); //give warning of entity limit
-        }
-    }
-    
     public void addEntity(String species, char symbol, int energy){
         if(entityStack < maxEnts){ //if less than max number of entities
-            double[] positions = new double[2];
-            positions = getPos(); //String speciesIn, char symbolIn, int xPosIn, int yPosIn, int energyIn, int IDIn, AWorld iWorld
-            entities.add(new ALifeform(species, symbol, positions[0], positions[1], energy, entityStack, this));           
+            int[] positions = new int[2];
+            positions = getStartingPos(); //String speciesIn, char symbolIn, int xPosIn, int yPosIn, int energyIn, int IDIn, AWorld iWorld
+            if("bee".equals(species)){
+                entities.add(new ACarnivore(species, symbol, positions[0], positions[1], energy, entityStack, this));  
+            } 
+            if("ant".equals(species)){
+                entities.add(new AHerbivore(species, symbol, positions[0], positions[1], energy, entityStack, this));  
+            } 
+            if("food".equals(species)){
+                entities.add(new AFruit(species, symbol, positions[0], positions[1], entityStack, this));  
+            } 
+            if("obstacle".equals(species)){
+                entities.add(new AnObstacle(species, symbol, positions[0], positions[1], entityStack, this));  
+            } 
+            if("plant".equals(species)){
+                entities.add(new APlant(species, symbol, positions[0], positions[1], entityStack, this));  
+            } 
+                     
             System.out.println(entities.get(entityStack).entToText()); //print to console
             entityStack++; //increment for next entity
         }else{

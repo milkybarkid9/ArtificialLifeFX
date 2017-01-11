@@ -5,9 +5,8 @@
  */
 package artificiallifefx;
 
-import java.awt.event.KeyEvent;
-import static java.lang.String.valueOf;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -28,9 +27,9 @@ public class WorldTab {
                 Label dimensionLabel = new Label("World dimensions:");
                 HBox dimensionsHB = new HBox(ArtificialLifeFX.DEFAULT_PADDING);    
                     Label xLabel = new Label("X:");
-                    TextField sizeX = new TextField ("35");
+                    TextField sizeX = new TextField ("30");
                     Label yLabel = new Label("Y:");
-                    TextField sizeY = new TextField ("35");
+                    TextField sizeY = new TextField ("20");
                 Label foodPercentLabel = new Label("Food percentage:");
                 TextField foodPercent = new TextField ("1");
                 Label obstaclePercentLabel = new Label("Obstacle percentage:");
@@ -75,18 +74,21 @@ public class WorldTab {
         
         submitWorld.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                double sizeXVal, sizeYVal, foodPercentVal, obstaclePercentVal;
-                int beeQuantVal, antQuantVal;
+                double  foodPercentVal, obstaclePercentVal;
+                int sizeXVal, sizeYVal, beeQuantVal, antQuantVal;
 
                 try {
-                    sizeXVal = Double.parseDouble(sizeX.getText());
-                    sizeYVal = Double.parseDouble(sizeY.getText());
+                    sizeXVal = Integer.parseInt(sizeX.getText());
+                    sizeYVal = Integer.parseInt(sizeY.getText());
                     foodPercentVal = Double.parseDouble(foodPercent.getText());
                     obstaclePercentVal = Double.parseDouble(obstaclePercent.getText());
                     beeQuantVal = Integer.parseInt(beeQuant.getText());
                     antQuantVal = Integer.parseInt(antQuant.getText()); 
                     
+                    ArtificialLifeFX.xSize = sizeXVal;
+                    ArtificialLifeFX.ySize = sizeYVal;
                     ArtificialLifeFX.world = ArtificialLifeFX.fromText(sizeXVal, sizeYVal, foodPercentVal, obstaclePercentVal, beeQuantVal, antQuantVal);
+                    
                     localUI.updateWorld();
                     
                     submitError.setText("");
@@ -96,12 +98,20 @@ public class WorldTab {
                             + "Obstacle percentage: "+obstaclePercentVal+"\n"
                             + "No. of Ants: "+antQuantVal+"\n"
                             + "No. of Bees: "+beeQuantVal);
-                    
+                    localUI.updateWorld();
                 } catch(Exception ee) {
                     submitError.setText("All values must be numbers");
+                    localUI.updateWorld();
                 }
             }
         });    
+        
+       worldTab.setOnSelectionChanged(new EventHandler<Event>() {
+            @Override
+            public void handle(Event t) {
+                ArtificialLifeFX.world.setShowID(false);
+            }
+        });
         
         
         
@@ -113,7 +123,7 @@ public class WorldTab {
         ));
         
         
-         
+        
         
         return worldTab;
     }

@@ -9,17 +9,20 @@ package artificiallifefx;
  *
  * @author James
  */
-public class ALifeform extends AnEntity {
+public abstract class ALifeform extends AnEntity {
     protected int energy;
+    protected boolean alive;
     
     ALifeform(){
         super();
         energy = 0;
+        alive = true;
     }
     
-    ALifeform(String speciesIn, char symbolIn, double xPosIn, double yPosIn, int energyIn, int IDIn, AWorld iWorld){
+    ALifeform(String speciesIn, char symbolIn, int xPosIn, int yPosIn, int energyIn, int IDIn, AWorld iWorld){
         super(speciesIn, symbolIn, xPosIn, yPosIn, IDIn, iWorld);
         energy = energyIn;
+        alive = true;
     } 
     
     public int getEnergy(){
@@ -28,6 +31,20 @@ public class ALifeform extends AnEntity {
     public void setEnergy(int iEnergy){
         energy = iEnergy;
     }
+    
+    public void decEnergy(){
+        energy--;
+    }
+    
+    public boolean getAlive(){
+        return alive;
+    }
+    
+    public void setAlive(boolean iAlive){
+        alive = iAlive;
+    }
+    
+    public abstract void packCheck();
     
     public boolean smellFood(AWorld.Direction D, int range){
         switch (D){
@@ -64,7 +81,8 @@ public class ALifeform extends AnEntity {
     }
     
     public String entToText(){ //return all the attributes in one string
-        String attributes = "\nSpecies: " + species + "\nSymbol : " + symbol + "\nxPosition: " + xPos + "\nyPosition: " + yPos + "\nEnergy: " + energy + "\nID: " + ID;
+        String attributes = "\nSpecies: " + species + "\nSymbol : " + symbol + "\nxPosition: " + xPos + "\nyPosition: " + yPos + "\nEnergy: " + energy + "\nAlive: " + alive + "\nID: " + ID;
         return attributes;
     }
+
 }

@@ -9,17 +9,17 @@ package artificiallifefx;
  *
  * @author James
  */
-public class AFood extends AnEntity{
+public abstract class AFood extends AnEntity{
     AFood(){
         super();
     }
     
-    AFood(String speciesIn, char symbolIn, double xPosIn, double yPosIn, int IDIn, AWorld iWorld){
+    AFood(String speciesIn, char symbolIn, int xPosIn, int yPosIn, int IDIn, AWorld iWorld){
         super(speciesIn, symbolIn, xPosIn, yPosIn, IDIn, iWorld);
     }
     
     public int getEnergy() {
-        return 5;
+        return 7;
     }
 
     public void setEnergy(int iEnergy) {
@@ -28,5 +28,17 @@ public class AFood extends AnEntity{
 
     public boolean smellFood(AWorld.Direction D, int range) {
         return false;
+    }
+
+    public void decEnergy() {
+        
+    }
+
+    public boolean getAlive() {
+        return false;
+    }
+
+    public void setAlive(boolean iAlive) {
+        
     }
 }
