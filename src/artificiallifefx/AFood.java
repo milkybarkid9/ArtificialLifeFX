@@ -26,8 +26,8 @@ public abstract class AFood extends AnEntity{
         
     }
 
-    public boolean smellFood(AWorld.Direction D, int range) {
-        return false;
+    public int smellFood(AWorld.Direction D, int range) {
+        return -1;
     }
 
     public void decEnergy() {
@@ -39,6 +39,14 @@ public abstract class AFood extends AnEntity{
     }
 
     public void setAlive(boolean iAlive) {
+        
+    }
+    
+    public AWorld.Direction getFoodDirection() {
+        throw new UnsupportedOperationException("Not possible"); 
+    }
+
+    public void setFoodDirection(AWorld.Direction newFoodDirection) {
         
     }
 }

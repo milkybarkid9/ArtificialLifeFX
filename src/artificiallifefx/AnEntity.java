@@ -84,9 +84,13 @@ public abstract class AnEntity {
     public abstract boolean getAlive();
     
     public abstract void setAlive(boolean iAlive);
+    
+    public abstract AWorld.Direction getFoodDirection();
+    
+    public abstract void setFoodDirection(AWorld.Direction newFoodDirection);
     //</editor-fold>
     
-    public abstract boolean smellFood(AWorld.Direction D, int range);
+    public abstract int smellFood(AWorld.Direction D, int range);
     
     public String entToString(){ //return the species and the position
         String speciesPos = "\nSpecies: " + species + "\nxPosition: " + xPos + "\nyPosition: " + yPos;

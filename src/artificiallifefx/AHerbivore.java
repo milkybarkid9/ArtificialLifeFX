@@ -19,4 +19,5 @@ public class AHerbivore extends ALifeform{
     public void packCheck(){
     
     }
+
 }

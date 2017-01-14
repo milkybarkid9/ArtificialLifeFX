@@ -27,17 +27,17 @@ public class WorldTab {
                 Label dimensionLabel = new Label("World dimensions:");
                 HBox dimensionsHB = new HBox(ArtificialLifeFX.DEFAULT_PADDING);    
                     Label xLabel = new Label("X:");
-                    TextField sizeX = new TextField ("30");
+                    TextField sizeX = new TextField ("10");
                     Label yLabel = new Label("Y:");
-                    TextField sizeY = new TextField ("20");
+                    TextField sizeY = new TextField ("10");
                 Label foodPercentLabel = new Label("Food percentage:");
-                TextField foodPercent = new TextField ("1");
+                TextField foodPercent = new TextField ("5");
                 Label obstaclePercentLabel = new Label("Obstacle percentage:");
-                TextField obstaclePercent = new TextField ("1");
+                TextField obstaclePercent = new TextField ("0");
                 Label beeQuantLabel = new Label("Number of bees:");
-                TextField beeQuant = new TextField ("5");
+                TextField beeQuant = new TextField ("0");
                 Label antQuantLabel = new Label("Number of ants:");
-                TextField antQuant = new TextField ("5");
+                TextField antQuant = new TextField ("1");
                 HBox submitHB = new HBox(ArtificialLifeFX.DEFAULT_PADDING);
                     Button submitWorld = new Button("Generate world");
                     Label submitError = new Label();
@@ -87,9 +87,8 @@ public class WorldTab {
                     
                     ArtificialLifeFX.xSize = sizeXVal;
                     ArtificialLifeFX.ySize = sizeYVal;
-                    ArtificialLifeFX.world = ArtificialLifeFX.fromText(sizeXVal, sizeYVal, foodPercentVal, obstaclePercentVal, beeQuantVal, antQuantVal);
                     
-                    localUI.updateWorld();
+                    ArtificialLifeFX.world = ArtificialLifeFX.fromText(sizeXVal, sizeYVal, foodPercentVal, obstaclePercentVal, antQuantVal, beeQuantVal);
                     
                     submitError.setText("");
                     setWorldSetupLabel(
@@ -98,7 +97,7 @@ public class WorldTab {
                             + "Obstacle percentage: "+obstaclePercentVal+"\n"
                             + "No. of Ants: "+antQuantVal+"\n"
                             + "No. of Bees: "+beeQuantVal);
-                    localUI.updateWorld();
+
                 } catch(Exception ee) {
                     submitError.setText("All values must be numbers");
                     localUI.updateWorld();

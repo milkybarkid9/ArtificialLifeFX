@@ -15,5 +15,15 @@ public class APlant extends AFood{
         super(speciesIn, symbolIn, xPosIn, yPosIn, IDIn, iWorld);
         canMove = false;
     }
+
+    @Override
+    public AWorld.Direction getFoodDirection() {
+        throw new UnsupportedOperationException("Not possible");
+    }
+
+    @Override
+    public void setFoodDirection(AWorld.Direction newFoodDirection) {
+        
+    }
     
 }

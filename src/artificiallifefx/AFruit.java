@@ -15,5 +15,7 @@ public class AFruit extends AFood{
         super(speciesIn, symbolIn, xPosIn, yPosIn, IDIn, iWorld);
         canMove = false;
     }
+
+    
     
 }

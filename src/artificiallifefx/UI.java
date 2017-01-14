@@ -31,17 +31,17 @@ public class UI {
     private final double SCENE_HEIGHT = 800;
     Scene scene = new Scene(pane, SCENE_WIDTH,SCENE_HEIGHT);
      
-    Image antIMG = new Image("file:ant.PNG");
-    Image beeIMG = new Image("file:bee.PNG");
-    Image rockIMG = new Image("file:rock.PNG");
-    Image fruit1IMG = new Image("file:fruit1.PNG");
-    Image fruit2IMG = new Image("file:fruit2.PNG");
-    Image fruit3IMG = new Image("file:fruit3.PNG");
-    Image fruit4IMG = new Image("file:fruit4.PNG");
-    Image fruit5IMG = new Image("file:fruit5.PNG");
-    Image grassIMG = new Image("file:grass.PNG");
-    Image meatIMG = new Image("file:meat.PNG");
-    Image errorIMG = new Image("file:question-mark.PNG");
+    Image antIMG = new Image("file:src\\images\\ant.PNG");
+    Image beeIMG = new Image("file:src\\images\\bee.PNG");
+    Image rockIMG = new Image("file:src\\images\\rock.PNG");
+    Image fruit1IMG = new Image("file:src\\images\\fruit1.PNG");
+    Image fruit2IMG = new Image("file:src\\images\\fruit2.PNG");
+    Image fruit3IMG = new Image("file:src\\images\\fruit3.PNG");
+    Image fruit4IMG = new Image("file:src\\images\\fruit4.PNG");
+    Image fruit5IMG = new Image("file:src\\images\\fruit5.PNG");
+    Image grassIMG = new Image("file:src\\images\\grass.PNG");
+    Image meatIMG = new Image("file:src\\images\\meat.PNG");
+    Image errorIMG = new Image("file:src\\images\\question-mark.PNG");
     
     public Scene setup(ArtificialLifeFX artificialLife){
         scrollPane.setContent(display);
@@ -70,7 +70,7 @@ public class UI {
             }
         }
 
-        for (int i = 0; i < ArtificialLifeFX.world.getEntityStack(); i++) { //replaces space with correct symbol
+        for (int i = 0; i < ArtificialLifeFX.world.entities.size(); i++) { //replaces space with correct symbol
             int tempy = (int) ArtificialLifeFX.world.entities.get(i).getyPos();
             int tempx = (int) ArtificialLifeFX.world.entities.get(i).getxPos();
             
@@ -113,7 +113,7 @@ public class UI {
     }
     
     public void labelEntities(){
-        for (int i = 0; i < ArtificialLifeFX.world.getEntityStack(); i++) { //replaces space with correct symbol
+        for (int i = 0; i < ArtificialLifeFX.world.entities.size(); i++) { //replaces space with correct symbol
             int tempy = (int) ArtificialLifeFX.world.entities.get(i).getyPos();
             int tempx = (int) ArtificialLifeFX.world.entities.get(i).getxPos();
                 

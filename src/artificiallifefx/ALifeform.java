@@ -12,6 +12,7 @@ package artificiallifefx;
 public abstract class ALifeform extends AnEntity {
     protected int energy;
     protected boolean alive;
+    protected AWorld.Direction foodDirection;
     
     ALifeform(){
         super();
@@ -38,46 +39,56 @@ public abstract class ALifeform extends AnEntity {
     
     public boolean getAlive(){
         return alive;
-    }
-    
+    }    
     public void setAlive(boolean iAlive){
         alive = iAlive;
     }
     
+    public AWorld.Direction getFoodDirection(){
+        return foodDirection;
+    }
+    public void setFoodDirection(AWorld.Direction newFoodDirection){
+        foodDirection = newFoodDirection;
+    }
+    
     public abstract void packCheck();
     
-    public boolean smellFood(AWorld.Direction D, int range){
+    public int smellFood(AWorld.Direction D, int range){
         switch (D){
             case north:
                 for (int i = 1; i <= range; i++) { //for a set smell range
                     if (world.isFood(xPos, yPos-i)){ //smell north in increments 
-                        return true;
+                        foodDirection = AWorld.Direction.north;
+                        return i;
                     }
                 }
-                return false;
+                return 99;
             case south:
                 for (int i = 1; i <= range; i++) { //for a set smell range
                     if (world.isFood(xPos, yPos+i)){ //smell south in increments 
-                        return true;
+                        foodDirection = AWorld.Direction.south;
+                        return i;
                     }
                 }
-                return false;
+                return 99;
             case east:
                 for (int i = 1; i <= range; i++) { //for a set smell range
                     if (world.isFood(xPos+i, yPos)){ //smell east in increments 
-                        return true;
+                        foodDirection = AWorld.Direction.east;
+                        return i;
                     }
                 }
-                return false;
+                return 99;
             case west:
                 for (int i = 1; i <= range; i++) { //for a set smell range
                     if (world.isFood(xPos-i, yPos)){ //smell west in increments 
-                        return true;
+                        foodDirection = AWorld.Direction.west;
+                        return i;
                     }
                 }
-                return false;
+                return 99;
         }
-        return false;
+        return 99;
     }
     
     public String entToText(){ //return all the attributes in one string

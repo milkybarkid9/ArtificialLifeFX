@@ -26,8 +26,8 @@ public class AnObstacle extends AnEntity{
         
     }
 
-    public boolean smellFood(AWorld.Direction D, int range) {
-        return false;
+    public int smellFood(AWorld.Direction D, int range) {
+        return -1;
     }
 
     @Override
@@ -42,6 +42,16 @@ public class AnObstacle extends AnEntity{
 
     @Override
     public void setAlive(boolean iAlive) {
+        
+    }
+
+    @Override
+    public AWorld.Direction getFoodDirection() {
+        throw new UnsupportedOperationException("Not possible"); 
+    }
+
+    @Override
+    public void setFoodDirection(AWorld.Direction newFoodDirection) {
         
     }
     
