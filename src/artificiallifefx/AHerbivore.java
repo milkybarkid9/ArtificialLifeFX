@@ -6,16 +6,28 @@
 package artificiallifefx;
 
 /**
- *
+ * Inherited from ALifeform, this class is represented as a Ant and has different pack behaviour to carnivores.
  * @author James
  */
 public class AHerbivore extends ALifeform{
-
-    AHerbivore(String species, char symbol, int xposition, int yposition, int energy, int entityStack, AWorld world) {
-        super(species, symbol, xposition, yposition,  energy, entityStack, world);
+    /**
+     * Default constructor
+     * @param species species of entity
+     * @param symbol symbol of entity
+     * @param xposition xpos of entity
+     * @param yposition ypos of entity
+     * @param energy energy of entity
+     * @param ID ID of entity
+     * @param world instance of world
+     */
+    AHerbivore(String species, char symbol, int xposition, int yposition, int energy, int ID, AWorld world) {
+        super(species, symbol, xposition, yposition,  energy, ID, world);
         canMove = true;
     }
     
+    /**
+     * not yet implemented
+     */
     public void packCheck(){
     
     }

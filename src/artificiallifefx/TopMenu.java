@@ -13,7 +13,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
 /**
- *
+ * Generates the top menu bar for the UI
  * @author James
  */
 public class TopMenu {

@@ -5,7 +5,7 @@
  */
 package artificiallifefx;
 /**
- *
+ * This class is the basis of all entities in the program. Sets up the basic variables and functions needed by all entities
  * @author James
  */
 
@@ -19,6 +19,9 @@ public abstract class AnEntity {
     protected boolean canMove;
     
     // <editor-fold defaultstate="collapsed" desc="Constructors">
+    /**
+     * Default constructor (never used)
+     */
     AnEntity(){
         species = "Default";
         symbol = 'D';
@@ -28,6 +31,15 @@ public abstract class AnEntity {
         world = new AWorld();
     }
     
+    /**
+     * Overloaded constructor 
+     * @param speciesIn species of entity
+     * @param symbolIn symbol of entity
+     * @param xPosIn xpos of entity
+     * @param yPosIn ypos of entity
+     * @param IDIn id of entity
+     * @param iWorld world entity is in
+     */
     AnEntity(String speciesIn, char symbolIn, int xPosIn, int yPosIn, int IDIn, AWorld iWorld){
         species = speciesIn;
         symbol = symbolIn;
@@ -92,12 +104,21 @@ public abstract class AnEntity {
     
     public abstract int smellFood(AWorld.Direction D, int range);
     
+    /**
+     * Gets species and position
+     * @return species and position as a string
+     */
     public String entToString(){ //return the species and the position
         String speciesPos = "\nSpecies: " + species + "\nxPosition: " + xPos + "\nyPosition: " + yPos;
         return speciesPos;
     }
+    
+    /**
+     * Gets entity statistics
+     * @return species, symbol, position and id as a string
+     */
     public String entToText(){ //return all the attributes in one string
-        String attributes = "\nSpecies: " + species + "\nSymbol : " + symbol + "\nxPosition: " + xPos + "\nyPosition: " + yPos + "\nEnergy: " + "\nID: " + ID;
+        String attributes = "\nSpecies: " + species + "\nSymbol : " + symbol + "\nxPosition: " + xPos + "\nyPosition: " + yPos + "\nID: " + ID;
         return attributes;
     }
 }

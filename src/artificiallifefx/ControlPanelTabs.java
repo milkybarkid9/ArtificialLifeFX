@@ -8,7 +8,7 @@ package artificiallifefx;
 import javafx.scene.control.TabPane;
 
 /**
- *
+ * Sets up the completed tabpane for the ui
  * @author James
  */
 public class ControlPanelTabs {
@@ -17,19 +17,18 @@ public class ControlPanelTabs {
     EntityInfoTab entityInfoTab = new EntityInfoTab();        
     WorldTab worldTab = new WorldTab();
     
-        
-    public TabPane setup(UI localUI){        
-        
+    /**
+     * Sets up the tabpane
+     * @param localUI the instance of UI it's in
+     * @return completed tabpane
+     */
+    public TabPane setup(UI localUI){   
         tabPane.getTabs().addAll(worldTab.setup(localUI), newEntityTab.setup(localUI), entityInfoTab.setup(localUI));
         tabPane.setMinWidth(400);
         tabPane.setMaxWidth(400);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);   
 
         return tabPane;
-    }
-
-    void setWorldSetupLabel(String text) {
-        worldTab.setWorldSetupLabel(text);
     }
 
 }

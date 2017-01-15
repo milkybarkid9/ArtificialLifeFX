@@ -22,7 +22,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 /**
- *
+ * Sets up the elements and contents of the new entity 
  * @author James
  */
 public class NewEntityTab {
@@ -69,7 +69,11 @@ public class NewEntityTab {
             
             Separator sep3 = new Separator();
             
-    
+    /**
+     * sets up the edit entity tab
+     * @param localUI instance of UI it's in
+     * @return completed tab
+     */
     public Tab setup(UI localUI){
         newEntityTab.setText("Entity Management");
         
@@ -80,36 +84,12 @@ public class NewEntityTab {
                 "ant",
                 "bee");
         
-        newEntTabVB.setPadding(new Insets(
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING));
-        dimensionsHB.setPadding(new Insets(
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING));
-        addHB.setPadding(new Insets(
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING));
-        editDimensionsHB.setPadding(new Insets(
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING));
-        editHB.setPadding(new Insets(
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING));
-        delHB.setPadding(new Insets(
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING,
-                ArtificialLifeFX.DEFAULT_PADDING));
+        newEntTabVB.setPadding(ArtificialLifeFX.DEFAULT_INSET);
+        dimensionsHB.setPadding(ArtificialLifeFX.DEFAULT_INSET);
+        addHB.setPadding(ArtificialLifeFX.DEFAULT_INSET);
+        editDimensionsHB.setPadding(ArtificialLifeFX.DEFAULT_INSET);
+        editHB.setPadding(ArtificialLifeFX.DEFAULT_INSET);
+        delHB.setPadding(ArtificialLifeFX.DEFAULT_INSET);
         
         energy.setMaxWidth(60);
         xpos.setMaxWidth(60);
@@ -152,11 +132,11 @@ public class NewEntityTab {
                 sep3);
         newEntityTab.setContent(newEntTabVB);
         
-        newEntityTab.setOnSelectionChanged((Event t) -> {
-            ArtificialLifeFX.world.setShowID(true);
+        newEntityTab.setOnSelectionChanged((Event t) -> { //on tab clicked
+            ArtificialLifeFX.world.setShowID(true); //show IDs
         });
         
-        add.setOnAction((ActionEvent e) -> {
+        add.setOnAction((ActionEvent e) -> { //on add button pressed
             int xposVal, yposVal, energyVal;
             String species = "";
             char symbol = 'd';
@@ -165,7 +145,7 @@ public class NewEntityTab {
                 yposVal = Integer.parseInt(ypos.getText());
                 energyVal = Integer.parseInt(energy.getText());
                 
-                switch(type.getValue().toString()){
+                switch(type.getValue().toString()){ //get type of entity to add
                     case "fruit":
                     case "fruit tree":
                         species = "food";
@@ -185,92 +165,94 @@ public class NewEntityTab {
                         break;
                 }
                 
-                if(ArtificialLifeFX.world.isEntityAt(xposVal,yposVal)){
-                    errorLabel.setText("Space already taken");
-                }else if(!ArtificialLifeFX.world.borderCheck(xposVal,yposVal)){
-                    errorLabel.setText("Coordinates are too large or too small");
+                if(ArtificialLifeFX.world.isEntityAt(xposVal,yposVal)){ //if entity at
+                    errorLabel.setText("Space already taken"); //state space taken
+                }else if(!ArtificialLifeFX.world.borderCheck(xposVal,yposVal)){ //if out of bounds
+                    errorLabel.setText("Coordinates are too large or too small"); //state out of bounds
                 }else {
-                    ArtificialLifeFX.world.addEntity(species, symbol, energyVal, xposVal, yposVal);
+                    ArtificialLifeFX.world.addEntity(species, symbol, energyVal, xposVal, yposVal); //add entity
                 }
                 
-            } catch(Exception ee) {
-                errorLabel.setText("Values must be numbers");
+            } catch(Exception ee) { //failed
+                errorLabel.setText("Values must be numbers"); //likely parsing failed
             }
         });         
         
-        entities.setOnMouseClicked((e) -> {
-            entities.getItems().clear();
-            for (int i = 0; i < ArtificialLifeFX.world.entities.size(); i++) {
+        entities.setOnMouseClicked((e) -> { //combobox clicked on
+            entities.getItems().clear(); //clear items
+            for (int i = 0; i < ArtificialLifeFX.world.entities.size(); i++) { //for all entities
+                //add the ID and species of all entities to the combobox
                 entities.getItems().addAll("ID: "+ArtificialLifeFX.world.entities.get(i).getID()+" Species: "+ArtificialLifeFX.world.entities.get(i).getSpecies());
             }
         });        
         
-        edit.setOnAction((e) -> {
+        edit.setOnAction((e) -> { //edit button clicked
             try{
-                String t = entities.getValue().toString();
-                String[] values = t.split(" ");
-                int ID = Integer.parseInt(values[1]);
+                String t = entities.getValue().toString(); //get combobox choice
+                String[] values = t.split(" "); //split using spaces
+                int ID = Integer.parseInt(values[1]); //get second string
                 
-                if(editEnergy.getText() != null){
-                    int energy = Integer.parseInt(editEnergy.getText());
-                    ArtificialLifeFX.world.editEntity(ID, "energy", energy+"");
+                if(editEnergy.getText() != null){ //if not empty
+                    int energy = Integer.parseInt(editEnergy.getText()); //parse edit value as int
+                    ArtificialLifeFX.world.editEntity(ID, "energy", energy+""); //edit entity
                 }
-                if(editxpos.getText() != null){
-                    int xpos = Integer.parseInt(editxpos.getText());
-                    ArtificialLifeFX.world.editEntity(ID, "xpos", xpos+"");
+                if(editxpos.getText() != null){ //if not empty
+                    int xpos = Integer.parseInt(editxpos.getText()); //parse edit value as int
+                    ArtificialLifeFX.world.editEntity(ID, "xpos", xpos+""); //edit entity
                 }
-                if(editypos.getText() != null){
-                    int ypos = Integer.parseInt(editypos.getText());
-                    ArtificialLifeFX.world.editEntity(ID, "ypos", ypos+"");
+                if(editypos.getText() != null){ //if not empty
+                    int ypos = Integer.parseInt(editypos.getText()); //parse edit value as int
+                    ArtificialLifeFX.world.editEntity(ID, "ypos", ypos+""); //edit entity
                 }
-                editError.setText("Successfully changed");
+                editError.setText("Successfully changed"); //state success
             }catch(Exception ee){
-                editError.setText("Failed changing");
+                editError.setText("Failed changing"); //state fail
             }
         });
                 
-        entities.setOnAction((e) -> {
+        entities.setOnAction((e) -> { //on combobox selection made
             try{
-                String t = entities.getValue().toString();
-                String[] values = t.split(" ");
-                int ID = Integer.parseInt(values[1]);
-
-                for (int i = 0; i < ArtificialLifeFX.world.entities.size(); i++) {
-                    if(ID == ArtificialLifeFX.world.entities.get(i).getID()){
+                String t = entities.getValue().toString(); //get combobox choice
+                String[] values = t.split(" "); //split using spaces
+                int ID = Integer.parseInt(values[1]); //get second string
+                
+                for (int i = 0; i < ArtificialLifeFX.world.entities.size(); i++) { //for all entities
+                    if(ID == ArtificialLifeFX.world.entities.get(i).getID()){ //if ID matches
+                        //populate boxes with original values
                         editEnergy.setText(ArtificialLifeFX.world.entities.get(i).getEnergy()+"");
                         editxpos.setText(ArtificialLifeFX.world.entities.get(i).getxPos()+"");
                         editypos.setText(ArtificialLifeFX.world.entities.get(i).getyPos()+"");
                     }
                 }
             }catch(Exception ee){
-                
+                //don't populate boxes
             }            
         });
         
-        entities2.setOnMouseClicked((e) -> {
-            entities2.getItems().clear();
-            for (int i = 0; i < ArtificialLifeFX.world.entities.size(); i++) {
+        entities2.setOnMouseClicked((e) -> { //combobox clicked on
+            entities2.getItems().clear(); //clear items
+            for (int i = 0; i < ArtificialLifeFX.world.entities.size(); i++) { //for all entities
+                //add the ID and species of all entities to the combobox
                 entities2.getItems().addAll("ID: "+ArtificialLifeFX.world.entities.get(i).getID()+" Species: "+ArtificialLifeFX.world.entities.get(i).getSpecies());
             }
         });   
         
-        del.setOnAction((e) -> {
+        del.setOnAction((e) -> { //on delete button pressed
             try{
-                String t = entities2.getValue().toString();
-                String[] values = t.split(" ");
-                int ID = Integer.parseInt(values[1]);
+                String t = entities2.getValue().toString(); //get combobox choice
+                String[] values = t.split(" "); //split using spaces
+                int ID = Integer.parseInt(values[1]); //get second string
 
-                for (int i = 0; i < ArtificialLifeFX.world.entities.size(); i++) {
-                    if(ID == ArtificialLifeFX.world.entities.get(i).getID()){
-                        ArtificialLifeFX.world.removeEntity(i);
+                for (int i = 0; i < ArtificialLifeFX.world.entities.size(); i++) { //for all entities
+                    if(ID == ArtificialLifeFX.world.entities.get(i).getID()){ //check ID matches
+                        ArtificialLifeFX.world.removeEntity(i); //remove entity
                     }
                 }
-                delError.setText("Successfully removed");
+                delError.setText("Successfully removed"); //state success
             }catch(Exception ee){
-                delError.setText("Failed removing");
+                delError.setText("Failed removing"); //state failure
             }           
-        });        
-        
+        });                
         
         return newEntityTab;
     }

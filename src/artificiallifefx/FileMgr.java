@@ -14,7 +14,10 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Handles saving and reading from a file
+ * @author James
+ */
 public class FileMgr {
     private static String[] configArray;
     public void WriteToCsvFile(String sFileName, String[] contents, int valsPerLine) {

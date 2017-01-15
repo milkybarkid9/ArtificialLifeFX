@@ -7,12 +7,25 @@ package artificiallifefx;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.stage.Stage;
 
 
-
+/**
+ * This is the static main class of the function that stores the static instance of AWorld and the instance of UI.
+ * It also has the animation timers to update the world and move the entities as well as triggers the chain of 
+ * functions that returns the completed UI. Also stores all the global instances of DEFAULT_PADDING, DEFAULT_INSET 
+ * and the boolean "running".
+ * @author James
+ */
 public class ArtificialLifeFX extends Application {
     public static Integer DEFAULT_PADDING = 5;
+    
+    public static Insets DEFAULT_INSET = new Insets(
+                ArtificialLifeFX.DEFAULT_PADDING,
+                ArtificialLifeFX.DEFAULT_PADDING,
+                ArtificialLifeFX.DEFAULT_PADDING,
+                ArtificialLifeFX.DEFAULT_PADDING);
     
     public static boolean running = false;
     public static int spriteScale;
@@ -22,7 +35,6 @@ public class ArtificialLifeFX extends Application {
     public static AnimationTimer worldTimer;
     public static AWorld world = new AWorld();
     
-        
     UI ui = new UI();
     
     public static int xSize = 0;
@@ -112,9 +124,6 @@ public class ArtificialLifeFX extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {    
-        
-        
-        
         moveTimer = new AnimationTimer(){
             long lastUpdate = 0; //move timer
             public void handle(long now){
@@ -130,14 +139,13 @@ public class ArtificialLifeFX extends Application {
         worldTimer = new AnimationTimer(){
             public void handle(long now){ //run every frame
                 ui.updateWorld(); //update the world
-                ui.controlPanelTabs.entityInfoTab.updateEntityInfo(world); //pass world to entityInfoTab
             }
         };                     
         worldTimer.start();
         
         //primaryStage.setResizable(false);
         primaryStage.setTitle("Artificial Life Simulator");
-        primaryStage.setScene(ui.setup(this));
+        primaryStage.setScene(ui.setup());
         primaryStage.show();
     }
 

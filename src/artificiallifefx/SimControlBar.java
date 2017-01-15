@@ -7,39 +7,34 @@ package artificiallifefx;
 
 import static artificiallifefx.ArtificialLifeFX.moveTimer;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
 /**
- *
+ * Sets up the bottom control bar for the UI
  * @author James
  */
-public class SimControlBar {        
-    public HBox setup(ArtificialLifeFX artificialLife, UI ui){
+public class SimControlBar {       
+    /**
+     * sets up the bottom control bar
+     * @param ui
+     * @return completed HBox
+     */
+    public HBox setup(UI ui){
         HBox simControl = new HBox(5);
         Button playButton = new Button("Play");
         Button resetButton = new Button("Reset"); 
         
-        simControl.getChildren().addAll(
-                playButton, 
-                resetButton
-                );
-        simControl.setPadding(new Insets(
-                ArtificialLifeFX.DEFAULT_PADDING, 
-                ArtificialLifeFX.DEFAULT_PADDING, 
-                ArtificialLifeFX.DEFAULT_PADDING, 
-                ArtificialLifeFX.DEFAULT_PADDING
-        ));
+        simControl.getChildren().addAll(playButton,resetButton);
+        simControl.setPadding(ArtificialLifeFX.DEFAULT_INSET);
                 
         playButton.setPrefWidth(60);
-        playButton.setOnAction((ActionEvent e) -> {
-            if("Play".equals(playButton.getText())){
+        playButton.setOnAction((ActionEvent e) -> { //play button pressed
+            if("Play".equals(playButton.getText())){ //if paused
                 playButton.setText("Pause");
                 ArtificialLifeFX.running = true;
                 ArtificialLifeFX.moveTimer.start();
-            }else{
+            }else{ //if playing
                 playButton.setText("Play");
                 ArtificialLifeFX.running = false;
                 ArtificialLifeFX.moveTimer.stop();
@@ -47,7 +42,7 @@ public class SimControlBar {
         });
         
         resetButton.setPrefWidth(60);
-        resetButton.setOnAction((ActionEvent e) -> {
+        resetButton.setOnAction((ActionEvent e) -> { //not currently implemented
             playButton.setText("Play");
             ArtificialLifeFX.running = false;
             moveTimer.stop();

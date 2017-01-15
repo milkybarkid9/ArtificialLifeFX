@@ -21,5 +21,12 @@
                 <root id="test.src.dir"/>
             </test-roots>
         </data>
+        <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>co</word>
+            <word>gridpane</word>
+            <word>ords</word>
+            <word>xpos</word>
+            <word>ypos</word>
+        </spellchecker-wordlist>
     </configuration>
 </project>

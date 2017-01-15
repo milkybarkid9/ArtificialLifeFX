@@ -6,14 +6,27 @@
 package artificiallifefx;
 
 /**
- *
+ * This class creates immovable objects that entities must avoid while searching for food
  * @author James
  */
 public class AnObstacle extends AnEntity{
+    
+    /**
+     * Default constructor 
+     */
     AnObstacle(){
         super();
     }
     
+    /**
+     * Overloaded constructor
+     * @param speciesIn species of entity
+     * @param symbolIn symbol of entity
+     * @param xPosIn xpos of entity
+     * @param yPosIn ypos of entity
+     * @param IDIn id of entity
+     * @param iWorld world entity is in
+     */
     AnObstacle(String speciesIn, char symbolIn, int xPosIn, int yPosIn, int IDIn, AWorld iWorld){
         super(speciesIn, symbolIn, xPosIn, yPosIn, IDIn, iWorld);
     }

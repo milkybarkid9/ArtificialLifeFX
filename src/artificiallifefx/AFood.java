@@ -6,14 +6,26 @@
 package artificiallifefx;
 
 /**
- *
+ * Inherited from AnEntity, this abstract class sets up the functions shared by AFruit and APlant
  * @author James
  */
 public abstract class AFood extends AnEntity{
+    /**
+     * Default constructor
+     */
     AFood(){
         super();
     }
     
+    /**
+     * Overloaded constructor 
+     * @param speciesIn species of entity
+     * @param symbolIn symbol of entity
+     * @param xPosIn xpos of entity
+     * @param yPosIn ypos of entity
+     * @param IDIn id of entity
+     * @param iWorld world entity is in
+     */
     AFood(String speciesIn, char symbolIn, int xPosIn, int yPosIn, int IDIn, AWorld iWorld){
         super(speciesIn, symbolIn, xPosIn, yPosIn, IDIn, iWorld);
     }
@@ -27,7 +39,7 @@ public abstract class AFood extends AnEntity{
     }
 
     public int smellFood(AWorld.Direction D, int range) {
-        return -1;
+        return 99;
     }
 
     public void decEnergy() {

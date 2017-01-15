@@ -14,7 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
 /**
- *
+ * Sets up the completed UI and calls all the functions to set up the subsections of the UI
  * @author James
  */
 public class UI {
@@ -30,7 +30,8 @@ public class UI {
     private final double SCENE_WIDTH = 1420;
     private final double SCENE_HEIGHT = 800;
     Scene scene = new Scene(pane, SCENE_WIDTH,SCENE_HEIGHT);
-     
+    
+    //entity images
     Image antIMG = new Image("file:src\\images\\ant.PNG");
     Image beeIMG = new Image("file:src\\images\\bee.PNG");
     Image rockIMG = new Image("file:src\\images\\rock.PNG");
@@ -43,63 +44,90 @@ public class UI {
     Image meatIMG = new Image("file:src\\images\\meat.PNG");
     Image errorIMG = new Image("file:src\\images\\question-mark.PNG");
     
-    public Scene setup(ArtificialLifeFX artificialLife){
+    /**
+     * Sets up the scene and calls menu setups
+     * @return completed scene
+     */
+    public Scene setup(){
         scrollPane.setContent(display);
         scrollPane.setPannable(true);
         
         pane.setTop(topMenu.setMenu());
         pane.setCenter(scrollPane);
         pane.setRight(controlPanelTabs.setup(this));
-        pane.setBottom(controlBar.setup(artificialLife, this));
+        pane.setBottom(controlBar.setup(this));
         
         display.setStyle("-fx-background-color: #B3FF99;");
         
         return scene;
     }
     
+    /**
+     * Updates the world by clearing the gridpane, then populating it with grass in every tile
+     * then for each entity, put the correct image in the correct tile.
+     */
     public void updateWorld(){  
-        display.getChildren().clear();
+        display.getChildren().clear(); //clear gridpane
         
+        //for each tile in the grid
         for (int i = 0; i < ArtificialLifeFX.ySize; i++){
             for (int j = 0; j < ArtificialLifeFX.xSize; j++) {
                 ImageView grassView = new ImageView(grassIMG);
                 grassView.setFitHeight(30);
                 grassView.setFitWidth(30);
                 
-                display.add(grassView, j, i);
+                display.add(grassView, j, i); //add a 30x30 grass img
             }
         }
 
         for (int i = 0; i < ArtificialLifeFX.world.entities.size(); i++) { //replaces space with correct symbol
-            int tempy = (int) ArtificialLifeFX.world.entities.get(i).getyPos();
-            int tempx = (int) ArtificialLifeFX.world.entities.get(i).getxPos();
+            int tempy = ArtificialLifeFX.world.entities.get(i).getyPos();
+            int tempx = ArtificialLifeFX.world.entities.get(i).getxPos();
+            String species = ArtificialLifeFX.world.entities.get(i).getSpecies();
             
-            if(ArtificialLifeFX.world.entities.get(i).getAlive() == false && !"food".equals(ArtificialLifeFX.world.entities.get(i).getSpecies()) && !"obstacle".equals(ArtificialLifeFX.world.entities.get(i).getSpecies())){
+            //if dead and not food not obstacle
+            if(ArtificialLifeFX.world.entities.get(i).getAlive() == false && !"food".equals(species) && !"obstacle".equals(species)){
+                //set image as meat
                 ImageView imageView = new ImageView(meatIMG);
                 imageView.setFitHeight(30);
                 imageView.setFitWidth(30);
-                display.add(imageView, ArtificialLifeFX.world.entities.get(i).getxPos(), ArtificialLifeFX.world.entities.get(i).getyPos());
-            } else if("food".equals(ArtificialLifeFX.world.entities.get(i).getSpecies())){  
+                display.add(imageView, tempx, tempy);
+                
+            //if food
+            } else if("food".equals(species)){  
+                //set image as fruit
                 ImageView imageView = new ImageView(fruit1IMG);
                 imageView.setFitHeight(30);
                 imageView.setFitWidth(30);
                 display.add(imageView, tempx, tempy);
-            }else if("obstacle".equals(ArtificialLifeFX.world.entities.get(i).getSpecies())){
+                
+            //if obstacle
+            }else if("obstacle".equals(species)){
+                //set image as rock
                 ImageView imageView = new ImageView(rockIMG);
                 imageView.setFitHeight(30);
                 imageView.setFitWidth(30);
                 display.add(imageView, tempx, tempy);
-            }else if("ant".equals(ArtificialLifeFX.world.entities.get(i).getSpecies())){
+                
+            //if ant
+            }else if("ant".equals(species)){
+                //set image as ant
                 ImageView imageView = new ImageView(antIMG);
                 imageView.setFitHeight(30);
                 imageView.setFitWidth(30);
                 display.add(imageView, tempx, tempy);
-            }else if("bee".equals(ArtificialLifeFX.world.entities.get(i).getSpecies())){
+                
+            //if bee
+            }else if("bee".equals(species)){
+                //set image as bee
                 ImageView imageView = new ImageView(beeIMG);
                 imageView.setFitHeight(30);
                 imageView.setFitWidth(30);
                 display.add(imageView, tempx, tempy);
+                
+            //if anything else
             }else{
+                //set unknown placeholder img
                 ImageView imageView = new ImageView(errorIMG);  
                 imageView.setFitHeight(30);
                 imageView.setFitWidth(18);
@@ -112,10 +140,13 @@ public class UI {
         labelEntities();
     }
     
+    /**
+     * Overlays the entity ID as a label over the tile it's current in
+     */
     public void labelEntities(){
         for (int i = 0; i < ArtificialLifeFX.world.entities.size(); i++) { //replaces space with correct symbol
-            int tempy = (int) ArtificialLifeFX.world.entities.get(i).getyPos();
-            int tempx = (int) ArtificialLifeFX.world.entities.get(i).getxPos();
+            int tempy = ArtificialLifeFX.world.entities.get(i).getyPos();
+            int tempx = ArtificialLifeFX.world.entities.get(i).getxPos();
                 
             if(ArtificialLifeFX.world.getShowID() == true){
                 Label ID = new Label();
@@ -124,10 +155,5 @@ public class UI {
                 display.add(ID, tempx, tempy);
             }   
         }
-    }
-    
-    
-    public void setWorldSetupLabel(String text){
-        controlPanelTabs.setWorldSetupLabel(text);
     }
 }
