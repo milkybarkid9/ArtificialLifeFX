@@ -17,6 +17,11 @@ import javafx.scene.control.MenuItem;
  * @author James
  */
 public class TopMenu {
+    /**
+     * Generates an alert pop-up box
+     * @param title Title of box
+     * @param content Content of box
+     */
     public void alertBox(String title, String content){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -26,17 +31,15 @@ public class TopMenu {
         alert.showAndWait();
     }
     
+    /**
+     * Sets up the top menu bar
+     * @return Completed menu
+     */
     public MenuBar setMenu() {
-        /**
-         * Function to set up the menu
-         */
+
         MenuBar menuBar = new MenuBar();
 
         Menu mFile = new Menu("File");
-        MenuItem mNewConfig = new MenuItem("New Configuration");
-        mNewConfig.setOnAction((ActionEvent actionEvent) -> {
-            //code here
-        });
 
         MenuItem mLoadConfig = new MenuItem("Load Configuration");
         mLoadConfig.setOnAction((ActionEvent actionEvent) -> {
@@ -58,63 +61,7 @@ public class TopMenu {
             moveTimer.stop();
             System.exit(0);
         });
-        mFile.getItems().addAll(mNewConfig, mLoadConfig, mSave, mSaveAs, mExit);
-
-        Menu mView = new Menu("View");
-        MenuItem mDisplayConfig = new MenuItem("Display Configuration");
-        mDisplayConfig.setOnAction((ActionEvent actionEvent) -> {
-            //code here
-        });
-
-        MenuItem mEditConfig = new MenuItem("Edit Configuration");
-        mDisplayConfig.setOnAction((ActionEvent actionEvent) -> {
-            //code here
-        });
-
-        MenuItem mLifeformInfo = new MenuItem("Lifeform Info");
-        mLifeformInfo.setOnAction((ActionEvent actionEvent) -> {
-            //code here
-        });
-
-        MenuItem mMapInfo = new MenuItem("Map Info");
-        mMapInfo.setOnAction((ActionEvent actionEvent) -> {
-            //code here
-        });
-        mView.getItems().addAll(mDisplayConfig, mEditConfig, mLifeformInfo, mMapInfo);
-
-        Menu mEdit = new Menu("Edit");
-        MenuItem mNewLifeform = new MenuItem("Add Lifeform");
-        mMapInfo.setOnAction((ActionEvent actionEvent) -> {
-            //code here
-        });
-
-        MenuItem mModifyLifeform = new MenuItem("Modify Lifeform");
-        mDisplayConfig.setOnAction((ActionEvent actionEvent) -> {
-            //code here
-        });
-
-        MenuItem mRemoveLifeform = new MenuItem("Remove Lifeform");
-        mLifeformInfo.setOnAction((ActionEvent actionEvent) -> {
-            //code here
-        });
-        mEdit.getItems().addAll(mNewLifeform, mModifyLifeform, mRemoveLifeform);
-
-        Menu mSimulation = new Menu("Simulation");
-        MenuItem mRun = new MenuItem("Run");
-        mRun.setOnAction((ActionEvent actionEvent) -> {
-            moveTimer.start();
-        });
-
-        MenuItem mPlayPause = new MenuItem("Play/Pause");
-        mPlayPause.setOnAction((ActionEvent actionEvent) -> {
-            moveTimer.stop();
-        });
-
-        MenuItem mReset = new MenuItem("Reset");
-        mReset.setOnAction((ActionEvent actionEvent) -> {
-            //code here
-        });
-        mSimulation.getItems().addAll(mRun, mPlayPause, mReset);
+        mFile.getItems().addAll(mLoadConfig, mSave, mSaveAs, mExit);
 
         Menu mHelp = new Menu("Help");
         MenuItem mAboutApp = new MenuItem("About (Application)");
@@ -128,7 +75,7 @@ public class TopMenu {
         });
         mHelp.getItems().addAll(mAboutApp, mAboutAuth);
 
-        menuBar.getMenus().addAll(mFile, mView, mEdit, mSimulation, mHelp);
+        menuBar.getMenus().addAll(mFile, mHelp);
         return menuBar;
     }
 }

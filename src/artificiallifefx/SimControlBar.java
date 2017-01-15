@@ -34,27 +34,23 @@ public class SimControlBar {
         ));
                 
         playButton.setPrefWidth(60);
-        playButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                if("Play".equals(playButton.getText())){
-                    playButton.setText("Pause");
-                    ArtificialLifeFX.running = true;
-                    ArtificialLifeFX.moveTimer.start();
-                }else{
-                    playButton.setText("Play");
-                    ArtificialLifeFX.running = false;
-                    ArtificialLifeFX.moveTimer.stop();
-                }
+        playButton.setOnAction((ActionEvent e) -> {
+            if("Play".equals(playButton.getText())){
+                playButton.setText("Pause");
+                ArtificialLifeFX.running = true;
+                ArtificialLifeFX.moveTimer.start();
+            }else{
+                playButton.setText("Play");
+                ArtificialLifeFX.running = false;
+                ArtificialLifeFX.moveTimer.stop();
             }
         });
         
         resetButton.setPrefWidth(60);
-        resetButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                playButton.setText("Play");
-                ArtificialLifeFX.running = false;
-                moveTimer.stop();                
-            }
+        resetButton.setOnAction((ActionEvent e) -> {
+            playButton.setText("Play");
+            ArtificialLifeFX.running = false;
+            moveTimer.stop();
         });
         
         return simControl;

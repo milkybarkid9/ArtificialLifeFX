@@ -11,15 +11,19 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.Separator;
 import javafx.scene.control.Tab;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 /**
  *
  * @author James
  */
 public class EntityInfoTab {
-    Label entityInfoTitle = new Label("All Entities:");
+    Label entityInfoTitle = new Label("All Entities");
     Label entityInfo = new Label();
     ScrollPane scrollPane = new ScrollPane();
     VBox vbox = new VBox();
@@ -28,14 +32,15 @@ public class EntityInfoTab {
     public Tab setup(UI localUI){
         entityInfoTab.setText("Entity Info");
         
-        
-        vbox.getChildren().add(entityInfo);
+        vbox.getChildren().addAll(entityInfoTitle, entityInfo);
         vbox.setPadding(new Insets(
                 ArtificialLifeFX.DEFAULT_PADDING, 
                 ArtificialLifeFX.DEFAULT_PADDING, 
                 ArtificialLifeFX.DEFAULT_PADDING, 
                 ArtificialLifeFX.DEFAULT_PADDING
         ));
+        
+        entityInfoTitle.setFont(Font.font("Arial", FontWeight.BOLD, 13));
         
         scrollPane.setContent(vbox);
         scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);

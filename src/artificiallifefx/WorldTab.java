@@ -16,6 +16,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 /**
  *
@@ -24,6 +26,7 @@ import javafx.scene.layout.VBox;
 public class WorldTab {
     Tab worldTab = new Tab("World");
             VBox worldTabVB = new VBox(ArtificialLifeFX.DEFAULT_PADDING);
+                Label newWorld = new Label("New World");
                 Label dimensionLabel = new Label("World dimensions:");
                 HBox dimensionsHB = new HBox(ArtificialLifeFX.DEFAULT_PADDING);    
                     Label xLabel = new Label("X:");
@@ -48,6 +51,7 @@ public class WorldTab {
                     submitHB.getChildren().addAll(submitWorld, submitError);
                 dimensionsHB.getChildren().addAll(xLabel, sizeX, yLabel, sizeY);
             worldTabVB.getChildren().addAll(
+                    newWorld,
                     dimensionLabel, 
                     dimensionsHB, 
                     foodPercentLabel, 
@@ -72,44 +76,39 @@ public class WorldTab {
         antQuant.setMaxWidth(60);
         submitWorld.setMaxWidth(100);
         
-        submitWorld.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                double  foodPercentVal, obstaclePercentVal;
-                int sizeXVal, sizeYVal, beeQuantVal, antQuantVal;
-
-                try {
-                    sizeXVal = Integer.parseInt(sizeX.getText());
-                    sizeYVal = Integer.parseInt(sizeY.getText());
-                    foodPercentVal = Double.parseDouble(foodPercent.getText());
-                    obstaclePercentVal = Double.parseDouble(obstaclePercent.getText());
-                    beeQuantVal = Integer.parseInt(beeQuant.getText());
-                    antQuantVal = Integer.parseInt(antQuant.getText()); 
-                    
-                    ArtificialLifeFX.xSize = sizeXVal;
-                    ArtificialLifeFX.ySize = sizeYVal;
-                    
-                    ArtificialLifeFX.world = ArtificialLifeFX.fromText(sizeXVal, sizeYVal, foodPercentVal, obstaclePercentVal, antQuantVal, beeQuantVal);
-                    
-                    submitError.setText("");
-                    setWorldSetupLabel(
-                            "Size: "+sizeXVal+" by "+sizeYVal+"\n"
-                            + "Food percentage: "+foodPercentVal+"\n"
-                            + "Obstacle percentage: "+obstaclePercentVal+"\n"
-                            + "No. of Ants: "+antQuantVal+"\n"
-                            + "No. of Bees: "+beeQuantVal);
-
-                } catch(Exception ee) {
-                    submitError.setText("All values must be numbers");
-                    localUI.updateWorld();
-                }
-            }
-        });    
+        newWorld.setFont(Font.font("Arial", FontWeight.BOLD, 13));
         
-       worldTab.setOnSelectionChanged(new EventHandler<Event>() {
-            @Override
-            public void handle(Event t) {
-                ArtificialLifeFX.world.setShowID(false);
-            }
+        submitWorld.setOnAction((ActionEvent e) -> {
+            double  foodPercentVal, obstaclePercentVal;
+            int sizeXVal, sizeYVal, beeQuantVal, antQuantVal;
+            try {
+                sizeXVal = Integer.parseInt(sizeX.getText());
+                sizeYVal = Integer.parseInt(sizeY.getText());
+                foodPercentVal = Double.parseDouble(foodPercent.getText());
+                obstaclePercentVal = Double.parseDouble(obstaclePercent.getText());
+                beeQuantVal = Integer.parseInt(beeQuant.getText());
+                antQuantVal = Integer.parseInt(antQuant.getText());
+                
+                ArtificialLifeFX.xSize = sizeXVal;
+                ArtificialLifeFX.ySize = sizeYVal;
+                
+                ArtificialLifeFX.world = ArtificialLifeFX.fromText(sizeXVal, sizeYVal, foodPercentVal, obstaclePercentVal, antQuantVal, beeQuantVal);
+                
+                submitError.setText("");
+                setWorldSetupLabel(
+                        "Size: "+sizeXVal+" by "+sizeYVal+"\n"
+                                + "Food percentage: "+foodPercentVal+"\n"
+                                + "Obstacle percentage: "+obstaclePercentVal+"\n"
+                                + "No. of Ants: "+antQuantVal+"\n"
+                                + "No. of Bees: "+beeQuantVal);
+                
+            } catch(Exception ee) {
+                submitError.setText("All values must be numbers");
+                localUI.updateWorld();
+            }   });    
+        
+        worldTab.setOnSelectionChanged((Event t) -> {
+           ArtificialLifeFX.world.setShowID(false);
         });
         
         

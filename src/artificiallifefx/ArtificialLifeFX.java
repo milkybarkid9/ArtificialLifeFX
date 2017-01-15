@@ -19,7 +19,7 @@ public class ArtificialLifeFX extends Application {
     public static int mapScale;
     
     public static AnimationTimer moveTimer;
-     public static AnimationTimer worldTimer;
+    public static AnimationTimer worldTimer;
     public static AWorld world = new AWorld();
     
         
@@ -28,7 +28,11 @@ public class ArtificialLifeFX extends Application {
     public static int xSize = 0;
     public static int ySize = 0;
     
-    
+    /**
+     * Turns an input string into a generated world
+     * @param input The input string from the user
+     * @return The completed world with entities
+     */
     public static AWorld fromText(String input){
         if ("d".equals(input) || "default".equals(input)){ 
             input = "50 36 20 1 ant 4 bee 6"; //d creates a default world
@@ -68,7 +72,16 @@ public class ArtificialLifeFX extends Application {
         
         return world; 
     }
-    
+    /**
+     * Turns an input string into a generated world. Input string is broken into integers and doubles already 
+     * @param xSize xSize of world
+     * @param ySize ySize of world
+     * @param foodPercent Percentage of the world that should be food
+     * @param obststaclePercent Percentage of the world that should be obstacles
+     * @param ants Number of ants
+     * @param bees Number of bees
+     * @return The completed world with entities
+     */
     public static AWorld fromText(int xSize, int ySize, double foodPercent, double obststaclePercent, int ants, int bees){
         AWorld world = new AWorld(xSize, ySize); //create new instance of the world
         
@@ -92,29 +105,32 @@ public class ArtificialLifeFX extends Application {
     }
     
    
-    
+    /**
+     * Starts the UI and handles updating it as well as calling functions to move entities
+     * @param primaryStage UI primary stage
+     * @throws Exception 
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {    
         
         
         
         moveTimer = new AnimationTimer(){
-            long lastUpdate = 0;
+            long lastUpdate = 0; //move timer
             public void handle(long now){
                 if (now - lastUpdate >= 500000000) { //0.5 seconds
-                    world.checkDead();
-                    world.move();  
+                    world.checkDead(); //check dead entities
+                    world.move(); //move alive entities
                     
-                    lastUpdate = now;
+                    lastUpdate = now; //reset move timer
                 }
             }
         };       
         
         worldTimer = new AnimationTimer(){
-            long lastUpdate = 0;
-            public void handle(long now){
-                ui.updateWorld(); 
-                ui.controlPanelTabs.entityInfoTab.updateEntityInfo(world);
+            public void handle(long now){ //run every frame
+                ui.updateWorld(); //update the world
+                ui.controlPanelTabs.entityInfoTab.updateEntityInfo(world); //pass world to entityInfoTab
             }
         };                     
         worldTimer.start();
@@ -125,6 +141,10 @@ public class ArtificialLifeFX extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Launches program
+     * @param args 
+     */
     public static void main(String[] args) {
         Application.launch(args);
     }

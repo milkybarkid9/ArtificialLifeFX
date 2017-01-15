@@ -23,6 +23,9 @@ public class AWorld {
     
     
     // <editor-fold defaultstate="collapsed" desc="Constructors">
+    /**
+     * Default constructor (never used)
+     */
     AWorld(){
         xSize = 15;
         ySize = 15;
@@ -30,6 +33,11 @@ public class AWorld {
         worldTick = 0;
         showID = false;
     }
+    /**
+     * Overloaded constructor
+     * @param ixSize Desired xSize
+     * @param iySize Desired ySize
+     */
     AWorld(int ixSize, int iySize){
         xSize = ixSize;
         ySize = iySize;
@@ -61,20 +69,9 @@ public class AWorld {
     }
     // </editor-fold>
     
-//    public void eat(int i, AnEntity eater, Direction d){
-//        
-//        int xpos = entities.get(i).getxPos();
-//        int ypos = entities.get(i).getyPos();
-//        
-//        for (int j = 0; j < entityStack; i++) {            
-//            if (isEntityAt(xpos,ypos) && ("food".equals(entities.get(j).getSpecies()) || entities.get(j).getAlive() == false)){
-//                eater.setxPos(xpos);
-//                eater.setyPos(ypos);
-//                removeEntity(i);                
-//            }
-//        }        
-//    }
-    
+    /**
+     * Checks all entities to see if they are dead. If so, set their state to dead
+     */    
     public void checkDead(){
         for (int i = 0; i < entities.size(); i++) {
             if(entities.get(i).getEnergy() <= 0){
@@ -84,13 +81,19 @@ public class AWorld {
         }
     }
     
+    /**
+     * Returns the statistics for the world. Live entities are listed in detail, food is just added in a counter
+     * @return the completed output string for all entities
+     */
     public String entityStats(){ 
         String output = "";
         int foodCount = 0;
         for (int i = 0; i < entities.size(); i++) { //for all entities
+            //if food or (dead & not obstacle)
             if("food".equals(entities.get(i).getSpecies()) || (entities.get(i).getAlive() == false && !"obstacle".equals(entities.get(i).getSpecies()))){ //if entity is food, increment food count
-                foodCount++;
+                foodCount++; 
             }else if(!"obstacle".equals(entities.get(i).getSpecies())){ //if not an obstacle
+                //output ID: X, Species: X, Energy: X, Alixe: X \n
                 output += "ID: " + entities.get(i).getID() + ", Species: " + entities.get(i).getSpecies() + ", Energy: " + entities.get(i).getEnergy() + ", Alive: " + entities.get(i).getAlive() + "\n"; //print stats
             }           
         }
@@ -98,170 +101,11 @@ public class AWorld {
         return output;
     }
     
-//    public boolean moveCheck(int i, Direction d, String towards){
-//        int xpos = entities.get(i).getxPos();
-//        int ypos = entities.get(i).getyPos();
-//        int ID = entities.get(i).getID();
-//        int energy = entities.get(i).getEnergy();
-//        String species = entities.get(i).getSpecies();
-//        
-//        boolean foodFound = false; //food not yet found
-//        switch(d){
-//            case north: //north chosen
-//                if(canMove(xpos,ypos-1) == 0){ //if space to move into is free
-//                    moveNorth(i,xpos,ypos);
-//                    System.out.println(species+" "+ID+" moved "+d+" "+towards); 
-//                    foodFound = true; //food found
-//                }else if(canMove(xpos-1,ypos) == 2){ //if space to move into is food
-//                    i--; //go back a space in entity list
-//                    entities.get(i).setEnergy(energy+5); //add energy to entity
-//                    moveNorth(i,xpos,ypos); //move entity
-//                    System.out.println(species+" "+ID+" moved "+d+" "+towards);
-//                    foodFound = true; //food found
-//                }
-//                break;
-//            case south: //south chosen
-//                if(canMove(xpos,ypos+1) == 0){ //if space to move into is free
-//                    moveSouth(i,xpos,ypos); //move entity
-//                    System.out.println(species+" "+ID+" moved "+d+" "+towards);
-//                    foodFound = true; //food found
-//                }else if(canMove(xpos-1,ypos) == 2){ //if space to move into is food
-//                    i--; //go back a space in entity list
-//                    entities.get(i).setEnergy(energy+5); //add energy to entity
-//                    moveSouth(i,xpos,ypos); //move entity
-//                    System.out.println(species+" "+ID+" moved "+d+" "+towards);
-//                    foodFound = true; //food found
-//                }
-//                break;
-//            case east: //east chosen
-//                if(canMove(xpos+1,ypos) == 0){ //if space to move into is free
-//                    moveEast(i,xpos,ypos); //move entity
-//                    System.out.println(species+" "+ID+" moved "+d+" "+towards);
-//                    foodFound = true; //food found
-//                }else if(canMove(xpos-1,ypos) == 2){ //if space to move into is food
-//                    i--; //go back a space in entity list
-//                    entities.get(i).setEnergy(energy+5); //add energy to entity
-//                    moveEast(i,xpos,ypos); //move entity
-//                    System.out.println(species+" "+ID+" moved "+d+" "+towards);
-//                    foodFound = true; //food found
-//                }                            
-//                break;
-//            case west: //west chosen
-//                if(canMove(xpos-1,ypos) == 0){ //if space to move into is free
-//                    moveWest(i,xpos,ypos); //move entity
-//                    System.out.println(species+" "+ID+" moved "+d+" "+towards);
-//                    foodFound = true; //food found
-//                }else if(canMove(xpos-1,ypos) == 2){ //if space to move into is food
-//                    i--; //go back a space in entity list
-//                    entities.get(i).setEnergy(energy+5); //add energy to entity
-//                    moveWest(i,xpos,ypos); //move entity
-//                    System.out.println(species+" "+ID+" moved "+d+" "+towards);
-//                    foodFound = true; //food found
-//                }
-//                break;
-//        }
-//        return foodFound;
-//    }
-    
-//    public void move(){
-//        worldTick++; //increment world tick
-//        System.out.println("\nWorld tick: "+worldTick+"\n---------------"); //print tick no
-//        boolean foodFound; 
-//        List<Direction> rngDire = new ArrayList<>(); //arraylist for all four directions
-//        Collections.addAll(rngDire, Direction.values()); //add all directions
-//        
-//        for (int i = 0; i < entityStack; i++) { //for all entities
-//            foodFound = false; 
-//            
-//            int xpos = entities.get(i).getxPos();
-//            int ypos = entities.get(i).getyPos();
-//            int ID = entities.get(i).getID();
-//            String species = entities.get(i).getSpecies();
-//                         
-//            if(entities.get(i).getCanMove()){ //if entity can move
-//                
-//                entities.get(i).decEnergy(); //take away one energy
-//                Collections.shuffle(rngDire); //shuffle directions
-//                int j = 0;
-//                boolean moved = false;
-//                
-//                directionLoop:                
-//                while(j < 4 || moved == false) { //for each direction in turn
-//                    int distanceToFood = entities.get(i).smellFood(rngDire.get(j), 9); //get distance to food
-//                    
-//                    switch (distanceToFood) {
-//                        case -1: //if no food
-//                            foodFound = false; //food not found
-//                            Direction direction = rngDire.get(j);
-//                            switch(direction){
-//                                case north:
-//                                    //moved = moveNorth(i, xpos, ypos);
-//                                    if(moveNorth(i, xpos, ypos)){
-//                                        break directionLoop;
-//                                    }
-//                                    break;
-//                                case south:
-//                                    //moved = moveSouth(i, xpos, ypos);
-//                                    if(moveSouth(i, xpos, ypos)){
-//                                        break directionLoop;
-//                                    }
-//                                    break;
-//                                case east:
-//                                    //moved = moveEast(i, xpos, ypos);
-//                                    if(moveEast(i, xpos, ypos)){
-//                                        break directionLoop;
-//                                    }
-//                                    break;
-//                                case west:
-//                                    //moved = moveWest(i, xpos, ypos);
-//                                    if(moveWest(i, xpos, ypos)){
-//                                        break directionLoop;
-//                                    }
-//                                    break;
-//                            }   
-//                            System.out.println(species+" "+ID+" moved "+direction);
-//                            break;
-//                        case 1:
-//                            //on top of food
-//                            eat(entities.get(i), xpos, ypos);
-//                            //foodFound = moveCheck(i, rngDire.get(j), "towards food");
-//                            foodFound = true;
-//                            break;
-//                        default:
-//                            Direction foodDirection = entities.get(i).getFoodDirection();
-//                            switch(foodDirection){
-//                                case north:
-//                                    eat(entities.get(i), xpos, ypos);
-//                                    moved = moveNorth(i, xpos, ypos);
-//                                    break;
-//                                case south:
-//                                    eat(entities.get(i), xpos, ypos);
-//                                    moved = moveSouth(i, xpos, ypos);
-//                                    break;
-//                                case east:
-//                                    eat(entities.get(i), xpos, ypos);
-//                                    moved = moveEast(i, xpos, ypos);
-//                                    break;
-//                                case west:
-//                                    eat(entities.get(i), xpos, ypos);
-//                                    moved = moveWest(i, xpos, ypos);
-//                                    break;
-//                            }
-//                            foodFound = true;
-//                            break;
-//                    }
-//                    j++;
-//                }                               
-//            }
-//        }
-//    }
-    
-    
-    
-    
-    
-    public void move(){
-        
+    /**
+     * Moves all entities in the direction of the closest food entity or if no food within range, move a random direction.
+     * Also handles eating food if within range. This is run every 0.5 seconds.
+     */
+    public void move(){        
         List<Direction> rngDire = new ArrayList<>(); //arraylist for all four directions
         Collections.addAll(rngDire, Direction.values()); //add all directions
         
@@ -272,11 +116,13 @@ public class AWorld {
                 int newDistance = 99;
                 int oldDistance = 99;
                 int finalDistance = 99;
-                Direction newDirection = rngDire.get(0);
-                Direction finalDirection = rngDire.get(0);
+                Direction newDirection = rngDire.get(0); //get first direction
+                Direction finalDirection = rngDire.get(0); //get first direction
+                String species = entities.get(i).getSpecies(); //get species
+                int ID = entities.get(i).getID(); //get ID
                 
-                directionLoop:
-                for (int j = 0; j < 4; j++) {                   
+                directionLoop: //find the smallest distance to food an its direction
+                for (int j = 0; j < 4; j++) {                      
                     newDirection = rngDire.get(j);
                     newDistance = entities.get(i).smellFood(newDirection, 9);
                     
@@ -289,61 +135,63 @@ public class AWorld {
                 
                 switch(finalDistance){
                     case 99: //no food
-                        moveDirection(i, finalDirection);
-                        System.out.println(entities.get(i).getSpecies()+" "+i+" moved "+finalDirection+" (no food)");
+                        moveDirection(i, finalDirection); 
+                        System.out.println(entities.get(i).getSpecies()+" "+entities.get(i).getID()+" moved "+finalDirection+" (no food)");
+                        entities.get(i).decEnergy(); //decrement energy
                         break;
 
                     case 1: //next to food 
+                        int j;
+                        if(i == 0){
+                            j = 0;
+                        }else{
+                            j = i-1;
+                        }
                         moveDirection(i, finalDirection);
-                        eat(i, finalDirection);                        
-                        System.out.println(entities.get(i).getSpecies()+" "+i+" moved "+finalDirection+" (next to food)");
+                        eat(j, finalDirection);                        
+                        System.out.println(entities.get(j).getSpecies()+" "+entities.get(j).getID()+" moved "+finalDirection+" (next to food)");
+                        entities.get(j).decEnergy(); //decrement energy
                         break;
 
                     default:
                         moveDirection(i, entities.get(i).getFoodDirection());
-                        System.out.println(entities.get(i).getSpecies()+" "+i+" moved "+finalDirection+" (towards food)");
+                        System.out.println(entities.get(i).getSpecies()+" "+entities.get(i).getID()+" moved "+finalDirection+" (towards food)");
+                        entities.get(i).decEnergy(); //decrement energy
                         break;
                 }
-                
-                entities.get(i).decEnergy(); //decrement energy
                                 
             }            
         }               
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
+    /**
+     * Removes entity close to another entity
+     * @param i index of entity doing the eating
+     * @param d direction to eat
+     */
     public void eat(int i, Direction d){
         int xpos = entities.get(i).getxPos();
         int ypos = entities.get(i).getyPos();
-        int foodIterator = -1;
+        int foodIndex = -1;
         
-        switch(d){
+        switch(d){ //fetches index of entity to be eaten
             case north:
-                foodIterator = getEntityAt(xpos, ypos-1);
+                foodIndex = getEntityAt(xpos, ypos-1);
                 break;
             case south:
-                foodIterator = getEntityAt(xpos, ypos+1);
+                foodIndex = getEntityAt(xpos, ypos+1);
                 break;
             case east:
-                foodIterator = getEntityAt(xpos+1, ypos);
+                foodIndex = getEntityAt(xpos+1, ypos);
                 break;
             case west:
-                foodIterator = getEntityAt(xpos-1, ypos);
+                foodIndex = getEntityAt(xpos-1, ypos);
                 break;
-        }
-        
-        removeEntity(foodIterator);
+        }        
+        removeEntity(foodIndex); //removes chosen entity
     }
     
-    public void moveDirection(int i, Direction d){
-        
+    public void moveDirection(int i, Direction d){        
         int xpos = entities.get(i).getxPos();
         int ypos = entities.get(i).getyPos();
         
@@ -508,6 +356,33 @@ public class AWorld {
         }
     }
     
+    public void addEntity(String species, char symbol, int energy, int xpos, int ypos){
+        if(entities.size() < maxEnts){ //if less than max number of entities
+            switch(species){
+                case "bee":
+                    entities.add(new ACarnivore(species, symbol, xpos, ypos, energy, entities.size(), this));
+                    break;
+                case "ant":
+                    entities.add(new AHerbivore(species, symbol, xpos, ypos, energy, entities.size(), this));
+                    break;
+                case "food":
+                    entities.add(new AFruit(species, symbol, xpos, ypos, entities.size(), this));
+                    break;
+                case "obstacle":
+                    entities.add(new AnObstacle(species, symbol, xpos, ypos, entities.size(), this));
+                    break;
+                case "plant":
+                    entities.add(new APlant(species, symbol, xpos, ypos, entities.size(), this));
+                    break;
+            }
+                     
+            System.out.println(entities.get(entities.size()-1).entToText()); //print to console
+            
+        }else{
+            System.out.println("Entity limit reached at " + maxEnts + " entities"); //give warning of entity limit
+        }
+    }
+    
     public void listEntities(){ //loop to print all entities
         for (int i = 0; i < entities.size(); i++) {
             System.out.println(entities.get(i).entToText());
@@ -530,14 +405,18 @@ public class AWorld {
                         entities.get(i).setSymbol(symbolChar[0]);
                         break;
 
+                    case "energy":
+                        entities.get(i).setEnergy(Integer.parseInt(newVal));
+                        break;
+                        
                     case "xpos":
-                        if(canMove(Integer.parseInt(newVal), entities.get(i).getyPos()) == 0){
+                        if(!isEntityAt(Integer.parseInt(newVal), entities.get(i).getyPos())){
                             entities.get(i).setxPos(Integer.parseInt(newVal));
                         }                        
                         break;
 
                     case "ypos":
-                        if(canMove(entities.get(i).getxPos(), Integer.parseInt(newVal)) == 0){
+                        if(!isEntityAt(entities.get(i).getxPos(), Integer.parseInt(newVal))){
                             entities.get(i).setyPos(Integer.parseInt(newVal));
                         } 
                         break;      
