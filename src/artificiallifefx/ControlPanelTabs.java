@@ -31,4 +31,7 @@ public class ControlPanelTabs {
         return tabPane;
     }
 
+    public void updateEntityInfo(){
+        entityInfoTab.updateEntityInfo();
+    }
 }

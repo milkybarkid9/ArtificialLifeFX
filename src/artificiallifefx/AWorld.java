@@ -315,7 +315,7 @@ public class AWorld {
      * @return 0 if space is empty, 1 if space is full, 2 if space is food
      */
     public int canMove(int x, int y){
-        if(!borderCheck(x,y)){ //if co-ords are out of range of symmap
+        if(x < 0 || x >= xSize || y < 0 || y >= ySize){ //if co-ords are out of range
             System.out.println("Movement out of bounds");
             return 1; //false
         }else{

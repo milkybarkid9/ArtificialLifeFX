@@ -56,4 +56,7 @@ public class EntityInfoTab {
         return entityInfoTab;
     }
     
+    public void updateEntityInfo(){
+        entityInfo.setText(ArtificialLifeFX.world.entityStats());
+    }
 }

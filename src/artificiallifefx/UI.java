@@ -68,6 +68,7 @@ public class UI {
      */
     public void updateWorld(){  
         display.getChildren().clear(); //clear gridpane
+        updateEntityInfo();
         
         //for each tile in the grid
         for (int i = 0; i < ArtificialLifeFX.ySize; i++){
@@ -155,5 +156,9 @@ public class UI {
                 display.add(ID, tempx, tempy);
             }   
         }
+    }
+    
+    public void updateEntityInfo(){
+        controlPanelTabs.updateEntityInfo();
     }
 }

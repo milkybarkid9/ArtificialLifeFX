@@ -5,11 +5,8 @@
  */
 package artificiallifefx;
 
-import java.util.Arrays;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -174,7 +171,7 @@ public class NewEntityTab {
                 }
                 
             } catch(Exception ee) { //failed
-                errorLabel.setText("Values must be numbers"); //likely parsing failed
+                errorLabel.setText("All values must be numbers"); //likely parsing failed
             }
         });         
         
@@ -206,7 +203,7 @@ public class NewEntityTab {
                 }
                 editError.setText("Successfully changed"); //state success
             }catch(Exception ee){
-                editError.setText("Failed changing"); //state fail
+                editError.setText("All values must be numbers"); //state fail
             }
         });
                 

@@ -19,17 +19,15 @@ import javafx.stage.Stage;
  * @author James
  */
 public class ArtificialLifeFX extends Application {
-    public static Integer DEFAULT_PADDING = 5;
+    public static final Integer DEFAULT_PADDING = 5;
     
-    public static Insets DEFAULT_INSET = new Insets(
+    public static final Insets DEFAULT_INSET = new Insets(
                 ArtificialLifeFX.DEFAULT_PADDING,
                 ArtificialLifeFX.DEFAULT_PADDING,
                 ArtificialLifeFX.DEFAULT_PADDING,
                 ArtificialLifeFX.DEFAULT_PADDING);
     
     public static boolean running = false;
-    public static int spriteScale;
-    public static int mapScale;
     
     public static AnimationTimer moveTimer;
     public static AnimationTimer worldTimer;
